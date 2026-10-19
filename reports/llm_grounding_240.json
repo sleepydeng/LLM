@@ -1,0 +1,60 @@
+{
+  "n": 240,
+  "spearman_se": 0.06468462273531508,
+  "tested_pairs": 10,
+  "direction_correct": 6,
+  "significant_vs_shuffled": 5,
+  "verdict": "接地成立（5/10 个物理配对方向正确且明显强于错位对照）：LLM 的电磁字段确实随给定几何变化",
+  "motivated_pairs": [
+    {
+      "field": "los_ratio",
+      "driver": "min_dist",
+      "expected_sign": "+"
+    },
+    {
+      "field": "los_ratio",
+      "driver": "n_blocked",
+      "expected_sign": "-"
+    },
+    {
+      "field": "los_ratio",
+      "driver": "r100",
+      "expected_sign": "-"
+    },
+    {
+      "field": "reflection_ratio",
+      "driver": "r100",
+      "expected_sign": "+"
+    },
+    {
+      "field": "reflection_ratio",
+      "driver": "min_dist",
+      "expected_sign": "-"
+    },
+    {
+      "field": "diffraction_ratio",
+      "driver": "n_blocked",
+      "expected_sign": "+"
+    },
+    {
+      "field": "diffraction_ratio",
+      "driver": "min_dist",
+      "expected_sign": "-"
+    },
+    {
+      "field": "scattering_ratio",
+      "driver": "r100",
+      "expected_sign": "+"
+    },
+    {
+      "field": "pathloss_max_db",
+      "driver": "n_blocked",
+      "expected_sign": "+"
+    },
+    {
+      "field": "pathloss_max_db",
+      "driver": "min_dist",
+      "expected_sign": "-"
+    }
+  ]
+}

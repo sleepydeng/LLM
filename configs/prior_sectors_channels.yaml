@@ -1,0 +1,10 @@
+# 消融：sectors 换一种注入方式 —— 铺成 8 个方位楔形通道拼进输入，而不是经 FiLM。
+# 与 prior_real 对比回答"注入方式（FiLM vs 通道拼接）哪个更适合空间先验"。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real
+  prior_groups: [global_num, global_cat]   # FiLM 只吃全局字段
+  sectors_channels: true                   # sectors 走 8 个楔形通道（输入 4+8=12 通道）

@@ -1,0 +1,12 @@
+# 路线 A **主实验**：程序精确几何 + LLM 电磁推理，全部经 FiLM 注入。
+#
+# 与 prior_v3_masked_em（几何真实、电磁置零，dim 同为 64）配对，
+# 差值即 LLM 电磁内容的净贡献；与 prior_real_v3_shuffled 配对则检验
+# "起作用的是内容还是那条条件通路"。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real
+  prior_groups: [em_num, local_ratio, global_cat, sectors]

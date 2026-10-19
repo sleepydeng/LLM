@@ -1,0 +1,80 @@
+{
+  "n": 24,
+  "mean_abs_rho_real": 0.2679037267080745,
+  "mean_abs_rho_shuffled": 0.22771739130434782,
+  "verdict": "接地不足：真实相关与错位对照接近，LLM 的电磁字段没有随给定几何变化 —— 此时把几何直接喂给下游模型会更好，LLM 的边际贡献接近零（负面结果）",
+  "top_pairs": [
+    {
+      "field": "reflection_ratio",
+      "driver": "min_dist",
+      "rho": -0.49478260869565216,
+      "rho_shuffled": 0.10869565217391304
+    },
+    {
+      "field": "los_ratio",
+      "driver": "min_dist",
+      "rho": 0.8156521739130435,
+      "rho_shuffled": 0.2591304347826087
+    },
+    {
+      "field": "scattering_ratio",
+      "driver": "r50",
+      "rho": -0.18347826086956523,
+      "rho_shuffled": 0.35130434782608694
+    },
+    {
+      "field": "diffraction_ratio",
+      "driver": "min_dist",
+      "rho": 0.4973913043478261,
+      "rho_shuffled": -0.00782608695652174
+    },
+    {
+      "field": "permittivity",
+      "driver": "r100",
+      "rho": -0.22608695652173913,
+      "rho_shuffled": 0.26260869565217393
+    },
+    {
+      "field": "los_ratio",
+      "driver": "n_dense",
+      "rho": 0.7043478260869566,
+      "rho_shuffled": 0.22956521739130434
+    },
+    {
+      "field": "reflection_ratio",
+      "driver": "mean_dist",
+      "rho": -0.43478260869565216,
+      "rho_shuffled": 0.03304347826086956
+    },
+    {
+      "field": "penetration_loss_db",
+      "driver": "n_sparse",
+      "rho": -0.17043478260869566,
+      "rho_shuffled": 0.29739130434782607
+    },
+    {
+      "field": "scattering_ratio",
+      "driver": "r100",
+      "rho": -0.0026086956521739132,
+      "rho_shuffled": 0.43217391304347824
+    },
+    {
+      "field": "penetration_loss_db",
+      "driver": "mean_dist",
+      "rho": -0.1782608695652174,
+      "rho_shuffled": 0.20608695652173914
+    },
+    {
+      "field": "reflection_ratio",
+      "driver": "r50",
+      "rho": 0.0026086956521739132,
+      "rho_shuffled": 0.3782608695652174
+    },
+    {
+      "field": "los_ratio",
+      "driver": "r50",
+      "rho": 0.04782608695652174,
+      "rho_shuffled": -0.31478260869565217
+    }
+  ]
+}

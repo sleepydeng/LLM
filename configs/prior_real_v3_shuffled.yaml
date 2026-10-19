@@ -1,0 +1,10 @@
+# 路线 A 的**关键对照 3/3**：整条先验在样本间错位打乱（几何与电磁一起乱）。
+# 回答 H2："起作用的是先验内容，还是仅仅有一条条件通路。"
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: shuffled
+  prior_groups: [em_num, local_ratio, global_cat, sectors]
+  shuffle_seed: 12345

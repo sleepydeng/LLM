@@ -1,0 +1,14 @@
+# 消融：只用 CoT 文本，不用结构化字段。
+# 用来区分"CoT 嵌入本身有信息"与"结构化字段有信息、CoT 只是噪声"。
+#
+# 同样需要容量对照：见 prior_cot_only_shuffled.yaml。
+_base_: base.yaml
+
+model:
+  name: unet_film
+  cot:
+    enabled: true
+    mode: cot_only
+prior:
+  mode: real
+  shuffle_cot: false

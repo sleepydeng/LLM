@@ -1,0 +1,10 @@
+# 消融：只用全局字段（12 数值 + 14 类别 = 26 维），不要 sectors。
+# 与 prior_real 的差别就是"有没有随 Tx 变化的空间剖面"。
+# 如果这一档 ≈ prior_real，说明 sectors 这个核心增量没有带来信息。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real
+  prior_groups: [global_num, global_cat]

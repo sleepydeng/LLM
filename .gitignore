@@ -1,0 +1,29 @@
+# 数据与大文件：放数据盘，不进 git
+data/radiomapseer/
+data/radiomapseer
+priors/**/*.json
+!priors/**/audit.json
+priors/**/*.jsonl
+runs/
+reports/*.png
+reports/*.pdf
+_tmp_*.sh
+
+# 本地环境
+.venv/
+.venv-local/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# 系统垃圾
+.DS_Store
+__MACOSX/
+Thumbs.db
+desktop.ini
+
+# 编辑器
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,1554 @@
+
+===== PAGE 1 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 1
+ControlRadio: Prompt-Driven Controllable
+Diffusion for Cross-Modal Radio Map Generation
+Kangjun Liu, Xiying Pan, Shuhang Zhang, Xiang Xiang, Ke Chen,Member, IEEE, and Yaowei Wang
+Abstract—Radio maps describe how wireless signals propagate
+across space and are essential for wireless communication,
+sensing, and network planning. However, constructing accurate
+radio maps traditionally requires either dense measurements
+or computationally expensive physical simulations, which limits
+scalability and real-time deployment. Recent advances in gen-
+erative artificial intelligence offer a promising alternative, but
+existing approaches lack fine-grained control and physical con-
+sistency when applied to real-world wireless environments. Here
+we present ControlRadio, a controllable generative framework
+that produces radio maps from natural-language descriptions
+and environmental layouts, including building structures and
+transmitter locations. Joint semantic and spatial conditioning
+enables interpretable, propagation-plausible generation, while
+a controlled latent prior and layout-aware conditioning im-
+prove stability and structural consistency. Extensive experiments
+demonstrate that ControlRadio achieves state-of-the-art accuracy
+and strong generalization across diverse urban scenarios, while
+reducing computation time by more than four orders of mag-
+nitude compared with conventional simulation-based methods.
+Such results suggest a new paradigm for scalable and control-
+lable wireless environment modeling, with broad implications
+for next-generation communication systems and data-driven
+radio sensing. Source codes will be made publicly available at
+https://github.com/AkonLau/ControlRadio.
+Index Terms—Generative artificial intelligence (AI), Diffusion
+model, Radio map generation, Noise controller
+I. INTRODUCTION
+R
+ADIO maps characterize the spatial distribution of wire-
+less signal strength and spectrum usage across a phys-
+ical environment, and constitute a fundamental representa-
+tion for a wide range of wireless applications, including
+network planning [1], [2], spectrum management [3], local-
+ization [4], [5], environment-aware communication [6], and
+path planning [7], [8]. In emerging scenarios such as dense
+urban network deployments, low-altitude aerial platforms,
+and intelligent transportation systems, accurate radio maps
+are increasingly essential for enabling reliable, adaptive, and
+autonomous wireless operations. Despite their importance,
+This work is supported in part by the Major Key Project of Pengcheng
+Laboratory under Grant No. PCL2025A14 and PCL2025A02, and the National
+Natural Science Foundation of China under Grant No. 62536003.(K. Chen
+and Y. Wang are the corresponding authors of this work.)
+K. Liu and K. Chen are with the Pengcheng Laboratory, China (emails:
+liukj@pcl.ac.cn; chenk02@pcl.ac.cn); X. Pan is with the South China Uni-
+versity of Technology and the Pengcheng Laboratory, China (email: ft-
+panxiying@mail.scut.edu.cn); S. Zhang is with the Peking University, China
+(email: shuhangzhang@pku.edu.cn); X. Xiang is with the Huazhong Uni-
+versity of Science and Technology, and the Pengcheng Laboratory, China
+(email: xex@hust.edu.cn); Y . Wang is with the Harbin Institute of Tech-
+nology, Shenzhen, and also with the Pengcheng Laboratory, China (email:
+wangyaowei@hit.edu.cn).
+(a) | Conventional Challenges:
+     Rigid & Resource-Intensive
+(b) | Proposed Method:
+    Controllable Data-Driven Synthesis
+(c) | Future Applications:
+Adaptive & Autonomous Systems
+Physics-based 
+Simulation
+(Ray Tracing)
+Physical
+Measurement
+High Latency / 
+Time-Consuming
+High Cost & 
+Sparse Data
+Semantic 
+Conditions 
+(Text Prompts)
+Physics-Semantics 
+Integration
+Geometric 
+Conditions 
+(Layout Priors)
+Controllable 
+Generative Model 
+(Diffusion Process)
+Synthesized 
+Radio Map 
+(High-Fidelity 
+Output)
+UAV/Low-Altitude 
+Networks
+Intelligent 
+Transportation
+Next-Gen 
+Network Planning 
+(5G/6G)
+Old Ways:
+Slow, Expensive, Rigid.
+New Approach:
+Controllable Synthesis from Data 
+Prospects:
+Reliable, Adaptive, Autonomous
+Generative Al for Radio Mapping: A Paradigm Shift 
+Fig. 1. Paradigm shift in radio map generation. The proposed controllable
+generative AI framework overcomes the rigidity and computational cost of
+conventional approaches, enabling efficient synthesis of high-fidelity radio
+maps to support adaptive and autonomous wireless systems.
+acquiring high-quality radio maps in practice remains a long-
+standing challenge. Direct measurement requires dense and
+repeated sensing campaigns, which are prohibitively costly and
+often infeasible at city scale [9], while sparse measurements
+combined with interpolation or regression typically fail to
+capture the complex propagation phenomena present in het-
+erogeneous environments [2].
+Consequently, radio map construction has traditionally re-
+lied on physics-based electromagnetic (EM) modeling, most
+notably ray-tracing approaches [10]–[12]. While physically
+grounded, these methods face fundamental scalability and
+flexibility limitations. Accurate ray tracing demands detailed
+three-dimensional environmental models, precise material pa-
+rameters, and exhaustive enumeration of multi-path interac-
+tions, resulting in extremely high compute cost in dense
+urban scenes. For example, generating a single256×2562D
+radio map with meter-level resolution at one frequency, while
+accounting for multiple reflections, can require several minutes
+of computation on modern hardware. Such costs render large-
+scale deployment, real-time adaptation, and rapid scenario
+exploration impractical. Moreover, physics-based pipelines are
+inherently rigid, offering limited support for partial observa-
+tions, dynamic environments, or task-driven constraints where
+semantic conditions or user intent must be explicitly incorpo-
+rated. These limitations significantly hinder their applicability
+in next-generation, data-driven wireless systems [13].
+Recent advances in generative artificial intelligence, partic-
+ularly diffusion probabilistic models [14], [15], have demon-
+strated an unprecedented ability to synthesize complex, high-
+dimensional data under flexible multimodal control. By iter-
+atively denoising random noise guided by text, images, or
+arXiv:2608.09357v1  [cs.CV]  10 Aug 2026
+===== PAGE 2 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 2
+structural cues, diffusion models [16] have redefined the state
+of the art in controllable visual content generation. These
+developments offer a compelling opportunity for radio map
+generation: rather than explicitly simulating wave propaga-
+tion, generative models can learn implicit physical regularities
+from data and synthesize signal fields directly. However,
+transferring diffusion models from natural images to wireless
+signal modeling is far from straightforward. Radio maps
+are governed by strong geometry-dependent physical con-
+straints [17], where phenomena such as shadowing, diffraction,
+and multipath propagation are tightly coupled to environmental
+layout. Effective radio map generation must therefore satisfy
+two stringent requirements simultaneously: preserving layout-
+consistent spatial structure while remaining responsive to high-
+level semantic or task-driven conditions. Existing generative
+models typically address only one of these aspects, resulting
+in limited controllability or physically implausible outputs.
+To address these challenges, we proposeControlRadio, a
+controllable diffusion-based framework that reformulates radio
+map generation as a cross-modal conditional synthesis prob-
+lem. As illustrated in Fig. 1, ControlRadio unifies free-form
+textual prompts with explicit environmental layout constraints
+to generate propagation-plausible radio maps. After offline
+supervision generation and training, it reduces repeated online
+map generation from minutes to sub-second latency (typically
+0.15–0.45 s per map on one GPU and 0.02–0.05 s with
+eight GPUs; Fig. 8(a)). This is an amortized online-generation
+advantage rather than an end-to-end replacement for data
+acquisition or ray tracing. The model enables fine-grained,
+prompt-driven control over transmitter configurations, environ-
+mental conditions, and propagation characteristics, making it
+well-suited for large-scale, adaptive wireless scenarios.
+As depicted in Fig. 3, the ControlRadio framework is struc-
+tured around three key technical components. First, aLayout-
+Aware ControlNetinjects geometric priors, such as building
+morphology and transmitter placement, into the diffusion
+process at every denoising step, ensuring strong spatial consis-
+tency with the underlying environment. Second, we propose a
+novelNoise Controllerthat replaces the conventional fixed
+Gaussian initialization with a statistically modulated noise
+distribution. By explicitly controlling the mean and variance of
+the injected noise, this module transforms noise from a purely
+stochastic element into an interpretable and tunable control
+mechanism, substantially enhancing generation stability, con-
+trollability, and cross-sample consistency. Third, aDecoupled
+Fine-tuning Strategyleverages pretrained visual-semantic
+priors while efficiently adapting the model to radio-specific
+signal domains, enabling robust performance even under lim-
+ited annotated data. Beyond high-fidelity static map synthesis,
+ControlRadio supports time-varying radio map generation and
+facilitates downstream applications such as coverage predic-
+tion, anomaly detection, and autonomous network planning.
+By bridging generative AI with wireless signal modeling,
+ControlRadio establishes a scalable and flexible foundation
+for next-generation wireless environment simulation.
+Our main contributions are summarized as follows:
+•We introduceControlRadio, the first prompt-driven and
+controllable diffusion framework for cross-modal radio
+map generation, which jointly enforces semantic intent
+and layout-consistent physical structure within a unified
+model.
+•We propose a novelNoise Controllerwith statistically
+modulated noise injection, providing an explicit mecha-
+nism to regulate diffusion stochasticity. This design en-
+hances generation stability, controllability, and robustness
+across diverse propagation conditions.
+•We develop adecoupled fine-tuning strategythat effi-
+ciently adapts pretrained generative models to radio sig-
+nal domains under limited supervision, while preserving
+physically meaningful spatial structures.
+•Extensive simulation experiments demonstrate consistent
+improvements over state-of-the-art baselines in gener-
+ation accuracy and controllability; propagation-aware,
+V AE, and geometry-only analyses further characterize
+physical plausibility and conditioning fidelity. Build-
+ing on the proposed framework, we further construct
+TimeRadioMap, a large-scale time-series radio map
+benchmark for systematic evaluation of temporal gener-
+alization beyond static reconstruction.
+The remainder of this paper is organized as follows: Sec-
+tion II reviews related works in radio map modeling and
+diffusion-based generation. Section III introduces the defini-
+tion of radio map generation and the mathematical explanation
+of the diffusion models. Section IV presents the proposed
+ControlRadio framework. Section V provides extensive exper-
+imental validation and analysis. Finally, Section VI concludes
+the paper and discusses future research directions.
+II. RELATEDWORK
+Our work tackles the problem of controllable radio map
+generation by introducingControlRadio, a novel framework
+that integrates multi-modal conditioning and Noise Controller
+into a diffusion-based generative model. To contextualize our
+contributions, we review related literature across three core
+research domains:Radio Map Simulation and Generation,
+Prompt-Driven Diffusion Models, andNoise Optimization for
+Diffusion Generation. These domains form the foundation
+upon which our proposed methodology is developed.
+Radio Map Simulation and Generation.Traditional radio
+map construction methods rely heavily on physics-based sim-
+ulators or analytical propagation models, such as ray trac-
+ing [10] or empirical path loss formulations [18]. Although
+physics-based methods are interpretable and accurate when
+sufficient prior information is available, they often require ex-
+tensive environmental modeling and high computational cost,
+which restricts their applicability in time-sensitive or adaptive
+scenarios. To address this, recent learning-based methods [19]–
+[23] leverage deep neural networks (e.g.,CNNs, GNNs, trans-
+formers) to predict signal distributions from partial observa-
+tions. However, most of these approaches focus on single-
+modality inputs (e.g.,occupancy maps or GPS trajectories)
+and lack fine-grained control over generation behavior. Some
+works [24], [25] have explored semantic augmentation, but
+they often treat conditioning as a post-hoc bias rather than an
+===== PAGE 3 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 3
+integral part of the generative process. In contrast, Control-
+Radio adopts a fully conditional diffusion architecture, tightly
+integrating structural priors and semantic prompts throughout
+the generation pipeline.
+Recent advanced architectures broaden this landscape. Ra-
+dioLAM combines propagation-based augmentation, mixture-
+of-experts diffusion, and physics-guided candidate selection
+for fine-grained 3D maps under ultra-low sampling [26];
+RadioDUN unfolds propagation-guided sparse recovery into
+an interpretable network [27]; RadioAR performs coarse-
+to-fine autoregressive estimation [28]; and CKMDiff uses a
+learned diffusion prior for CKM inverse problems [29]. These
+methods primarily reconstruct fields from sparse or degraded
+numerical observations, whereas ControlRadio targets prompt-
+and layout-conditioned synthesis.
+Beyond these learning-based reconstruction architectures,
+ray tracing and wireless digital twins provide physically
+grounded simulation and system-level scene replicas [10],
+[12], [30]. Neural radio-frequency radiance fields and 3D
+Gaussian-splatting methods recover continuous 3D wireless
+fields from sparse RF observations [31], [32]. Their inputs,
+dimensionality, and objectives differ from the common 2D Ra-
+dioMapSeer protocol, so including them in the same numerical
+comparison would confound task definition with architectural
+performance. ControlRadio is complementary: it amortizes
+controllable 2D synthesis after learning from ray-tracing ref-
+erences, whereas these paradigms emphasize physics-based
+simulation or measurement-driven 3D reconstruction.
+Prompt-Driven Diffusion Models.Diffusion models have
+recently become a dominant paradigm in generative modeling,
+showing impressive performance in image synthesis [14], [33],
+audio generation [34], and cross-modal tasks [15]. Prompt-
+driven diffusion incorporates external conditioning signals,
+most commonly natural language descriptions or spatial con-
+straints, to steer the denoising process and produce outputs that
+are consistent with user intent. ControlNet [35] exemplifies a
+key advancement by injecting structural controls (e.g.,edge
+maps or segmentation masks) into pretrained diffusion models
+via trainable adapters. While effective for visual domains, such
+designs have not been adapted to wireless signal fields, where
+generation must respect underlying physical constraints and
+spatial propagation patterns. Our framework extends this idea
+by incorporating building masks, transmitter placement maps,
+and uncertainty signals as layout-aware controls, enabling
+physics-informed generation under real-world signal propaga-
+tion constraints.Noise Optimization for Diffusion Genera-
+tion.Noise optimization has emerged as a robust technique
+for enhancing generative models by refining or re-engineering
+random noises during either the training or inference phases.
+Recent works have explored a variety of noise-based strategies,
+including leveraging structured noise distributions like blue
+noise [36] and temporally-correlated noise priors [37], and
+optimizing initial noise for improved generation [38], [39].
+Other approaches have focused on designing frameworks
+around specific “golden noise” [40] or introducing advanced
+noise decomposition techniques for controllable generation,
+such as Factorized Diffusion [41] and NoiseCollage [42].
+Although these methods have demonstrated the potential of
+noise as a control signal, they often operate on a high-
+level, unstructured, or discrete basis. Similar to [43], it
+primarily proposes injecting signal leakage into the initial
+noise during inference to correct the inconsistency between
+training and inference in diffusion models. Our work, however,
+introduces a novelNoise Controllerthat transforms noise
+injection into a tunable process by precisely controlling its
+statistical properties, thereby enabling a more refined control
+over the generative process.
+In summary, our approach diverges from conventional methods
+by introducing atunable noise injection paradigmtailored
+for radio signal field generation. Drawing inspiration from
+noise optimization techniques, ControlRadio pioneers the use
+of aNoise Controllerthat modulates the generative process
+by precisely adjusting the statistical properties of the noise.
+This unified framework addresses a key limitation in existing
+literature, enabling the generation of physically plausible radio
+maps that are not onlycontrollable via promptsbut also
+exhibitsuperior consistency and alignmentthrough a novel
+noise-based mechanism.
+III. PRELIMINARIES
+A. Formulation of Radio Map Generation Problem
+A radio map provides a spatial representation of wireless
+signal strength or channel quality over a given geographical
+area, typically represented as a 2D grid of Received Signal
+Strength Indicator (RSSI), Signal-to-Noise Ratio (SNR), or
+path loss values. Formally, letEdenote the environment,
+including terrain, building structures, and transmitter/receiver
+placements. A radio map can be expressed as a function
+R:R 2 →R, R(p) =signal metric at positionp,(1)
+wherep= (x, y)denotes a location coordinate in the
+environment.
+Traditional radio map construction relies on either: (a)
+Measurement-based methods, which interpolate sparse signal
+measurements collected via field surveys,e.g.,Kriging [44] or
+inverse distance weighting [45]; or (b)Model-based methods,
+which employ deterministic or stochastic propagation models,
+such as ray-tracing [10] or empirical path loss models. [18]
+However, these approaches face limitations in scalability,
+adaptability to new environments, and handling complex mul-
+tipath conditions.
+Recently,learning-based methods[19], [20], [23] have
+emerged, formulating radio map generation as a supervised
+or conditional generation problem. Given a set of conditions
+c(e.g.,building layouts, transmitter locations, transmission
+parameters), the objective is to learn a mapping
+Gθ(c)≈R,(2)
+that can generalize to unseen layouts or configurations. Cross-
+modal generation further extends this formulation by incor-
+porating high-level semantic promptst(natural language de-
+scriptions), enabling flexible and human-interpretable control
+over the generation process.
+===== PAGE 4 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 4
+B. Diffusion Models for Conditional Generation
+Diffusion models [14], [46] are a class of generative models
+that synthesize data by iteratively denoising a sample from a
+noise distribution. The forward process progressively corrupts
+a clean samplex 0 with Gaussian noise overTsteps:
+q(xt|xt−1) =N(
+p
+1−β t xt−1, βtI),(3)
+whereβ t denotes the variance schedule. The reverse process
+learns a parameterized denoising modelp θ(xt−1|xt), often
+implemented as a U-Net backbone, to recoverx 0.
+In conditional generation, additional informationy
+(e.g.,text embeddings, layouts) guides the denoising process
+via cross-attention or concatenated feature injection:
+pθ(xt−1|xt,y).(4)
+Stable Diffusion [15] improves scalability by operating in a
+latent space learned by a Variational Autoencoder (V AE), sig-
+nificantly reducing computational cost while preserving visual
+fidelity. ControlNet [35] further extends diffusion models with
+trainable condition-encoding branches that inject structured
+priors (e.g.,edges, depth maps) into intermediate layers of the
+U-Net, enabling fine-grained control over generation without
+retraining the entire backbone.
+In the context of radio map generation, diffusion-based
+models present two notable advantages. First, they can model
+complex spatial patterns resulting from multipath propagation
+without relying on explicit physical modeling. Second, they
+inherently support multi-conditional inputs (e.g.,text prompts
+and environmental layouts) via modular conditioning mech-
+anisms such as cross-attention or control networks. Despite
+these strengths, diffusion-based models for radio map genera-
+tion still face significant challenges. Specifically, they struggle
+with controllable generation, which limits their ability to align
+outputs with explicit user intentions or physical constraints,
+and they also face training difficulties that can hinder practical
+deployment and performance stability.
+IV. METHODOLOGY
+To overcome the limitations of traditional radio map gen-
+eration and enable controllable, semantically aligned, and
+structurally faithful signal synthesis, we proposeControlRa-
+dio, a diffusion-based generative framework jointly guided by
+high-level textual prompts and low-level layout constraints.
+This section introduces the overall framework and details the
+design of prompt-guided semantic conditioning, followed by
+three core components: the layout-aware ControlNet, the noise
+controller, and the unified training and interpretability strategy.
+Together, these components endow ControlRadio with strong
+controllability, physical interpretability, and data efficiency.
+A. Framework Overview
+Lety∈R H×W denote the target radio map (e.g.,received
+signal strength (RSS) or path loss) over a 2D spatial grid.
+Generation is conditioned on a set of multimodal inputsx=
+{xtext,x layout,x image}, including:
+•Textual promptx text describing transmission settings and
+environmental context (e.g.,frequency, power, weather);
+v2: "A radio map generated using the Dominant Path Model (DPM), with 
+a transmitter at (187, 108) operating at 23 dBm signal strength and a 
+5.9 GHz carrier frequency."
+v1: "A radio map with 1 transmitter located at (187, 108), having a signal 
+strength of 23 dBm."
+v3: "DPM radio map: transmitter at (187, 108) with 23 dBm signal 
+strength and 5.9 GHz frequency."
+v4: "A DPM radio map with 1 transmitter at (187, 108), showing signal 
+propagation patterns."
+v5: "A DPM radio map showing signal propagation from 1 transmitter at 
+(187, 108), with 23 dBm power at 5.9 GHz."
+v6: "Generate a DPM radio map with one transmitter at (x=187, y=108), 
+power 23 dBm, frequency 5.9 GHz in a dense urban area."
+Fig. 2. The illustration of different prompts.
+•Structural layout priorsx layout, such as building occu-
+pancy maps, transmitter positions, or semantic masks;
+•Optional visual contextx image,e.g.,aerial or satellite
+images for geographic reference.
+We formulate radio map generation as aconditional de-
+noising diffusionproblem. Starting from pure Gaussian noise
+zT ∼ N(0,I), the model iteratively refinesz t to generate a
+physically plausible signal fieldy, conditioned on multimodal
+inputs:
+zt−1 =ϵ θ(zt, t|xtext,x layout,x image),(5)
+whereϵ θ is implemented as a UNet backbone augmented
+by aLayout-Aware ControlNetand aNoise Controller.
+As depicted in Fig. 3 (c), the proposed framework adopts
+a joint fine-tuning strategy that selectively updates task-
+relevant components while keeping others frozen, enabling
+stable adaptation to radio map generation and improving the
+alignment between textual semantics, environmental layouts,
+and propagation patterns.
+B. Prompt-Guided Semantic Conditioning
+As illustrated in Fig. 2, we design a set of textual prompts
+to encode high-level semantic descriptions, which are used to
+condition and control the radio map generation process. A key
+innovation inControlRadiois the ability to generate radio
+maps directly from human-readable prompts. For example:
+“Generate a DPM radio map with one transmitter at
+(x=128, y=64), power 23 dBm, frequency 5.9 GHz
+in a dense urban area. ”
+This free-form prompt is first parsed into a structured semantic
+vector:
+ctext ={type,tx_pos,power,
+frequency,environment}. (6)
+The structured prompt is then encoded using a domain-adapted
+text encoder:
+etext =E text(ctext),(7)
+whereE text(·)is initialized from a pretrained CLIP [47]
+encoder and partially fine-tuned to capture radio-specific se-
+mantics.
+===== PAGE 5 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 5
+?
+ D
+Encoder Decoder
+weights frozen 
+weights trainable
+ Generate a DPM radio map ... CLIP text encoder
+E
+ControlNet
+SD
+Stable Diffusion ModuleSD
+ControlRadio ?????：
+∆?t
+Training data:
+?0 ?0 ?? ?0′ ?0′
+Generated 
+radio map
+noisy  latents
+???????：
+Layout-Aware 
+Conditions
+Layout-Aware 
+Conditions
+ControlRadio
+Text Prompts
+Predict?????
+???????
+?0′ ?0 Encoder
+D
+Decoder
+E
+?0 ?0′
+（a）The Overview of ControlRadio Pipeline （b）Pre-Training Phase for VAE Modules
+（c）Joint Fine-Tuning Phase
+（d）Inference
+ "Generate a DPM radio map with one transmitter 
+at (x=194, y=162), power 23 dBm, frequency 5.9 
+GHz in a dense urban area."
+ConditionsPrompts Controlled Noise 
+（optional）
+Launch ControlRadio Denoise Processing
+Layout-Aware Infos ??
+transmitter map
+extract transmitter 
+position
+Noise Controller
+Fig. 3. Overview of the proposedControlRadioframework for controllable cross-modal radio map generation.(a)Overall pipeline of ControlRadio. High-
+resolution radio maps are synthesized directly from a textual descriptionc text and environmental layout priorsm layout, enabling flexible and interpretable
+signal field generation.(b)Pre-training stage. A variational autoencoder (V AE) is optimized using a hybrid objective that combinesℓ 2 reconstruction loss
+and perceptual loss, encouraging the latent space to preserve both fine-grained signal variations and global propagation patterns.(c)Joint fine-tuning strategy.
+Selected modules are fine-tuned while others remain frozen, enabling effective cross-modal alignment without overfitting.(d)Inference. A layout-aware
+Noise Controller modulates the initial noise distribution using semantic and structural cues, guiding the denoising trajectory toward physically plausible and
+semantically consistent radio maps.
+By grounding embeddings to physically meaningful at-
+tributes (frequency, power, position, and environmental con-
+ditions), ControlRadio ensures that prompt-driven modulation
+respects propagation physics rather than relying solely on
+black-box embeddings.
+C. Layout-Aware ControlNet
+Radio propagation is highly sensitive to environmental
+geometry, including obstacles, reflection surfaces, and line-of-
+sight availability. To incorporate structural priors, we introduce
+aLayout-Aware ControlNet, inspired by spatial conditioning
+in controllable image generation [35].
+Letm layout ∈R H×W×C represent spatial priors, including:
+•Building occupancy mapsm building;
+•Transmitter placement mapsm tx, inferred fromc text
+through prompt-based semantic grounding;
+•Optional semantic layers,e.g.,digital elevation models.
+These are concatenated as:
+mlayout = [mbuilding,m tx, . . .].(8)
+The ControlNet takesz t andm layout and outputs a spatial
+modulation term∆z t:
+∆zt =ControlNet(z t, t,mlayout),(9)
+which is fused into the UNet via residual summation or
+FiLM-based feature-wise modulation [48]. This approach al-
+lows structural priors to be injected at all denoising steps,
+ensuring that the generated map naturally respects occlusions
+and wavefront diffusion instead of applying post-hoc masking.
+===== PAGE 6 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 6
+D. Noise Controller for Tunable Injection
+TheLayout-Aware Noise Controllerregulates the initial
+latent prior rather than acting as a theoretically optimal sched-
+uler or propagation model. Conventional inference starts from
+zT ∼ N(0,I); we instead use
+zT ∼ N(µ, σ2I),(10)
+and retain the standard conditional denoising trajectory there-
+after. Radio maps are dominated by smooth large-scale attenu-
+ation with localized geometry-induced discontinuities. Exces-
+sive initial variance can introduce high-frequency randomness
+that early denoising must remove; controllingµandσ 2
+therefore supplies a simple statistical inductive bias. It does
+not encode an electromagnetic law.
+The parameters are selected only on the validation set
+and are fixed before test evaluation. The selected setting is
+µ=−0.1andσ 2 = 0.001. Fig. 7(a) shows a stable neigh-
+borhood around this point rather than an isolated optimum.
+The controller is parameter-free, improves consistency with-
+out changing the backbone, and permits an explicit fidelity–
+stochasticity tradeoff. A fixed global prior may nevertheless
+be suboptimal under large changes in frequency, environment,
+or measurement domain; a condition-dependent learned prior
+is a natural extension.
+E. Decoupled Fine-tuning Strategy
+To achieve efficient cross-modal alignment under limited
+data, we adopt a two-stage training and fine-tuning strategy:
+a) Stage 1: VAE Module Pretraining.:Given compu-
+tational and storage constraints, we first pretrain the V AE
+modules independently to learn stable and expressive latent
+representations.
+•V AE Modules:The encoder and decoder are optimized
+using a hybrid objective that combinesℓ 2 reconstruction
+loss with perceptual loss [49], ensuring high-fidelity
+reconstruction in the latent space.
+•As illustrated in Fig. 3 (b), this pre-training stage provides
+a robust latent initialization that facilitates subsequent
+diffusion-based radio map generation.
+b) Stage 2: Joint Fine-Tuning Strategy.:To effectively
+integrate structural layout conditions and semantic text infor-
+mation into a unified generative process, we adopt a joint
+fine-tuning strategy for the core components of ControlRadio,
+namely theLayout-Aware ControlNetand theStable Diffu-
+sion modules, as illustrated in Fig. 3(c). This stage aims to
+align spatial priors with semantic guidance while preserving
+the generative capacity inherited from pretrained diffusion
+models.
+•Layout-Aware ControlNet:The ControlNet branch is
+fully trainable during this stage and is optimized to
+encode environment-specific structural priors, including
+building morphology and transmitter layouts. By in-
+jecting layout-aware features into each denoising step,
+ControlNet learns to modulate spatial signal propagation
+patterns in a geometry-consistent manner, enabling the
+diffusion backbone to respect physical constraints such as
+occlusion, line-of-sight blocking, and spatial attenuation.
+•Stable Diffusion Modules:The diffusion backbone is
+fine-tuned in a selective and controlled manner. High-
+level layers responsible for semantic alignment and global
+structure generation are gradually unfrozen, while low-
+level feature extractors remain partially frozen in early
+epochs to preserve pretrained knowledge. This strategy
+allows the model to adapt to radio-domain signal char-
+acteristics and prompt-conditioned generation without
+sacrificing training stability or overfitting under limited
+supervision.
+Meanwhile, theText Encoderand theNoise Controllerare
+kept frozen during this stage to promote stable convergence
+and prevent overfitting.
+•Text Encoder:The CLIP-based text encoder is ini-
+tialized from large-scale image–text pretraining corpora
+and remains fixed during fine-tuning, providing robust
+and semantically consistent prompt embeddings without
+introducing additional training instability.
+•Noise Controller:The Noise Controller is implemented
+as a parameter-free module governed by a small set
+of predefined hyperparameters, eliminating the need for
+learning additional parameters while enabling explicit and
+interpretable control over the noise statistics.
+Under this configuration, all trainable modules are jointly
+optimized on annotated radio map datasets using the standard
+diffusion objective:
+L=E
+hϵθ(zt, t|x)−ϵ 22i,(11)
+which encourages the denoising network to accurately predict
+the injected noise while implicitly aligning prompt semantics
+with the generated spatial signal structure. The two-stage
+strategy supports adaptation by selectively updating the layout
+branch or recalibrating the controlled prior. The denoising
+trajectory also exposes intermediate states for diagnostic in-
+spection and interactive prompt refinement.
+In summary, ControlRadio unifies semantic prompt rea-
+soning, layout-aware spatial control, and diffusion-based de-
+noising within a single generative framework. This design
+achieves high controllability, strong agreement with simulated
+propagation structures, and robust generalization to unseen
+layouts, establishing a foundation for data-driven wireless
+environment modeling.
+V. EXPERIMENT
+A. Experimental Settings
+1) Datasets:To rigorously evaluate the effectiveness of
+the proposedControlRadioframework in controllable ra-
+dio map generation under realistic and diverse propagation
+scenarios, we utilize theRadioMapSeerdataset [11]. This
+dataset is constructed using high-fidelity WinProp ray trac-
+ing [50], which models interactions such as reflection and
+diffraction. It provides a challenging, reproducible simulation
+benchmark for spectrum-aware learning in static and dynamic
+urban environments. The WinProp-generated maps are used
+as both supervision and reference targets. Accordingly, this
+controlled benchmark evaluates whether ControlRadio can
+===== PAGE 7 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 7
+generate simulator-consistent radio maps for previously unseen
+layouts. However, these results should not be interpreted as ev-
+idence of sim-to-real generalization, material-level propagation
+accuracy, or equivalence to field measurements.
+RadioMapSeer consists of 701 synthetic city-scale radio
+maps generated from urban topologies extracted from Open-
+StreetMap. These maps cover six representative metropolitan
+areas, including Ankara, Berlin, Glasgow, Ljubljana, London,
+and Tel Aviv, encompassing a diverse range of structural
+densities, street layouts, and architectural morphologies. Each
+map covers a256×256meter region with a spatial resolution
+of 1 meter per pixel. Building layouts are rasterized into
+binary morphology maps, where a value of 1 denotes structural
+obstruction and 0 denotes free space. Each scene contains
+between 50 and 150 buildings and 80 transmitter locations,
+randomly sampled to ensure sufficient spatial diversity and
+propagation variability.
+To model both deterministic and uncertain wireless condi-
+tions, the dataset provides two categories of ground truth radio
+maps: theStatic Radio Map(SRM), representing propagation
+in fixed environments, and theDynamic Radio Map(DRM),
+which incorporates time-varying occlusions (e.g.,moving ve-
+hicles) to simulate dynamic urban contexts such as vehic-
+ular communication and mobile users. All transmitters and
+receivers are positioned at a uniform height of 1.5 meters,
+while building heights are fixed at 25 meters for consistency.
+The operating frequency is set to 5.9 GHz with a transmit
+power of 23 dBm, reflecting common vehicular communica-
+tion standards.
+Each data sample is converted into a set of conditioning
+inputs for controllable generation, including: (1) a binary
+morphology map encoding structural constraints, (2) a sparse
+transmitter mask indicating active signal sources, and (3) a
+natural language prompt that specifies the target generation
+scenario. For instance, a prompt may describe the transmitter
+location, power, operating frequency, and environmental con-
+text, such as “generating an IRT4 radio map with a single
+transmitter at(x= 98, y= 121)operating at 23 dBm and 5.9
+GHz in a dense urban area.” In particular, the soft Uncertainty
+Guidance Signal (UGS) is not provided as a spatial input
+map but is used solely as an inference-time scalar control.
+UGS= 1.0denotes the neutral setting and introduces no
+additional uncertainty modulation, whereas other values are
+considered only in the sensitivity analysis.
+For rigorous evaluation, we partition the dataset into 500
+training maps, 100 validation maps, and 101 testing maps
+following the ID orders, ensuring zero spatial overlap between
+the sets. This strict map-level split tests generalization to
+unseen simulated city structures and propagation conditions.
+2) Implementation:TheControlRadioframework is built
+upon the Stable Diffusion architecture, where we experi-
+ment with Stable Diffusion (SD) v2.1 backbone [15]. All
+experiments are implemented in PyTorch and executed with
+mixed-precision (FP16) training on 8 NVIDIA GeForce RTX
+4090 GPUs. We initialize the model using publicly available
+pretrained weights and train it for 100 epochs with a learning
+rate of1×10 −5. Optimization is carried out using the AdamW
+optimizer with a weight decay of 0.01. For V AE pretraining,
+we employ a batch size of 6 per GPU across 8 GPUs, resulting
+in an effective batch size of 48. During unified fine-tuning, the
+batch size is set to 3 per GPU across 8 GPUs. Unless otherwise
+stated, diffusion-based generation uses 50 DDIM (Denoising
+Diffusion Implicit Models) denoising steps. For time-series
+radio map generation, we adopt only 15 steps, which already
+achieve the optimal RMSE (Fig. 8(b)), enabling substantially
+faster inference without performance degradation.
+During training, we fine-tune two major components: (1)
+the U-Net backbone of SD, responsible for capturing joint
+spatial and semantic representations of radio propagation; and
+(2) the ControlNet module, which conditions generation on
+structural and transmitter-level cues. To balance task-specific
+adaptation with the preservation of pretrained knowledge, we
+adopt a gradual layer unfreezing strategy. Specifically, training
+begins by fine-tuning high-level semantic layers, while lower-
+level encoders are progressively unfrozen during the early
+training epochs, enabling stable optimization and improved
+generalization. All model selection is performed on the val-
+idation split. The Noise Controller and UGS settings are
+selected by validation sensitivity analyses and then frozen
+for testing. The map-level partition, preprocessing, metrics,
+and other common evaluation settings follow the RadioDiff-
+k2 [51] protocol wherever applicable. The main quantitative
+baseline results are adopted from RadioDiff-k 2 under the
+matched RadioMapSeer protocol, as identified in the table
+caption, and are not presented as re-tuned reproductions. No
+test map is used for training, tuning, or model selection.
+At inference time, the model takes as input a tuple com-
+prising a binary morphological layout, a sparse transmitter
+mask, and a natural language prompt. No UGS map is added
+to this tuple; the scalar UGS is used only as an inference-
+time sensitivity control, with UGS= 1.0denoting no addi-
+tional uncertainty modulation. On one RTX 4090, generating
+1,000 maps requires slightly over 7 minutes, or approximately
+0.44 s per map at 50 DDIM steps. The 15-step, eight-GPU
+setting used for large-scale TimeRadioMap synthesis averages
+approximately 0.02 s per map. These numbers describe online
+generation after training; offline WinProp supervision and the
+one-time 100-epoch training run are accounted for separately
+in Table VIII. For fair and consistent evaluation, all settings
+for ControlRadio and its ablation variants are selected on the
+validation split and fixed before test evaluation.
+B. Evaluation Metrics
+We adopt four widely used metrics to evaluate the accuracy,
+fidelity, and structural integrity of the generated radio maps:
+•Normalized Mean Squared Error (NMSE):
+NMSE = ∥ ˆR−R∥ 22
+∥R∥22 ,(12)
+where ˆRis the generated radio map, andRis the
+ground truth. This metric reflects the normalized energy
+difference and penalizes magnitude errors.
+•Root Mean Squared Error (RMSE):
+RMSE =
+vuut 1
+N
+NX
+i=1
+( ˆRi −R i)2,(13)
+===== PAGE 8 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 8
+whereNrepresents the number of pixels. RMSE captures
+the absolute pixel-wise prediction deviation.
+•Peak Signal-to-Noise Ratio (PSNR):
+PSNR = 10·log 10
+ M AX2
+MSE
+
+,(14)
+whereM AXis the maximum possible pixel value (typ-
+ically 1.0 or 255), and MSE is the mean squared error.
+A higher PSNR indicates better visual fidelity and lower
+noise.
+•Structural Similarity Index (SSIM):
+SSIM(R, ˆR) = (2µRµ ˆR +c 1)(2σR ˆR +c 2)(µ2R +µ 2ˆR +c 1)(σ2R +σ 2ˆR +c 2) ,(15)
+whereµandσdenote local means and variances, and
+c1, c2 are stabilizing constants. SSIM reflects structural
+and perceptual similarity.
+Considering that global image metrics do not establish
+electromagnetic correctness, we introduce three task-specific
+diagnostics: DAC for distance-dependent attenuation, moti-
+vated by large-scale path-loss models [52]; LNC Err for the
+signal-gap error between building-map-derived LOS/NLOS
+proxy regions [52]; and BGF1 for strict pixel-overlap of
+high-gradient transitions, adopting the F-measure structure of
+boundary evaluation [53]. They probe complementary macro-
+scopic effects but not individual multipath components or
+Maxwell-equation compliance. LetR, ˆR∈[0,1] H×W denote
+the reference and generated RSS maps on the evaluation scale
+(stored 8-bit maps are divided by 255), and letp(X)be
+the radial mean profile obtained using 32 uniformly spaced
+map-grid distance bins. DAC combines agreement with the
+reference radial profile and the monotonic attenuation trend
+of the prediction:
+cprof =ρ
+
+p( ˆR),p(R)
+
+, c mono =−ρ s
+
+k,p( ˆR)
+
+,
+DAC = 0.7cprof + 0.3cmono,
+(16)
+whereρandρ s denote Pearson and rank correlations,k
+contains the valid-bin indices, and the negative sign reflects
+decreasing RSS with distance. The binning and weights are
+fixed for all methods.
+Letµ L(X)andµ N(X)be the mean values over 2-D
+LOS and NLOS proxy masks obtained by ray casting on the
+building map. The LOS/NLOS contrast error is
+∆LN(X) =µ L(X)−µ N(X),
+LNCErr =
+∆LN( ˆR)−∆ LN(R) . (17)
+Finally, letG(X)be the Sobel gradient magnitude,Q 90 its
+90th percentile, andia pixel index. The high-gradient set and
+its strict zero-tolerance overlap F1 score are
+EX ={i:G i(X)≥Q 90(G(X))},
+BGF1 = 2|E ˆR ∩E R||E ˆR|+|E R| . (18)
+Higher DAC and BGF1 and lower LNC Err indicate better
+agreement. LNCErr is reported in normalized RSS units; tables
+report the per-map mean and standard deviation.
+C. Baseline Comparisons
+To evaluate the effectiveness of our proposed ControlRadio
+framework, we compare it against the state-of-the-art models
+that represent different paradigms in radio map estimation:
+•RadioUNet[19]: A two-stage U-Net-based deep learn-
+ing model that regresses radio propagation fields from
+morphological inputs and sparse transmitter annotations.
+It exploits spatial continuity and architectural inductive
+biases to generate accurate pathloss maps. While efficient
+and interpretable, it is less flexible under highly dynamic
+scenarios or when fine-grained control is required.
+•RME-GAN[20]: A generative adversarial network de-
+signed for realistic radio map generation. It uses adversar-
+ial training to enforce spectral and morphological fidelity,
+yielding perceptually sharp results. However, the GAN
+structure can suffer from training instability and limited
+support for conditional control during generation.
+•RadioDiff[23]: A diffusion-based generative framework
+tailored for high-quality radio map estimation in complex
+environments. It incorporates an Adaptive Fourier Trans-
+form module into the U-Net backbone to enhance spatial-
+frequency representation and robustness to environmental
+variations. The iterative denoising process enables better
+generalization from sparse measurements but lacks con-
+trollable semantic alignment.
+•RadioDiff-k 2 [51]: A physics-informed diffusion frame-
+work for multipath-aware radio map construction, explic-
+itly guided by the Helmholtz equation. It employs a dual-
+diffusion design in which one model infers electromag-
+netic (EM) singularities, which are critical spatial features
+associated with negative wave numbers, while the other
+reconstructs the complete radio map by leveraging these
+singularities together with the surrounding environmental
+context. This approach bridges data-driven efficiency with
+physics-based EM modeling, achieving higher accuracy
+in complex propagation environments compared to con-
+ventional EM solvers and purely neural methods.
+These baselines collectively cover representative generative
+modeling strategies, ranging from convolutional regression to
+diffusion and adversarial learning, enabling a comprehensive
+evaluation of ControlRadio in terms of controllability, accu-
+racy, and generalization.
+D. Comparative Evaluation
+Quantitative Comparison.We evaluate all methods under
+two representative scenarios, namelyStatic Radio Mapping
+(SRM)andDynamic Radio Mapping (DRM), which corre-
+spond to stationary and time-varying environments, respec-
+tively. Performance is assessed using NMSE, RMSE, PSNR,
+and SSIM. As summarized in Table I, ControlRadio consis-
+tently outperforms all baselines on the SRM (DPM w/o cars)
+dataset, achieving the lowest RMSE of0.0166and NMSE
+of0.0024, together with the highest PSNR and SSIM. Com-
+pared with the strongest baseline, RadioDiff-k 2, ControlRadio
+achieves a substantial reduction in NMSE, indicating a clear
+improvement in reconstruction accuracy and structural fidelity.
+In more challenging DRM settings with moving vehicles, as
+===== PAGE 9 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 9
+Signal Source
+Building
+Input RME-GAN RadioDiff Ours Ground TruthRadioUnet
+Fig. 4. Qualitative comparisons on complex urban scenes. ControlRadio exhibits superior prompt-conditioned transformations and stronger spatial coherence
+under prompt v6, effectively adapting to varying environmental conditions and accurately reflecting object placement constraints. Qualitative results for
+RadioDiff-k2 are not shown, as its trained model parameters are not publicly available for reproduction and visual evaluation.
+shown in Table I, ControlRadio maintains robust performance
+despite increased temporal and environmental complexity. It
+achieves an RMSE of0.0180and an NMSE of0.0028,
+outperforming RadioDiff-k 2 by a significant margin, while
+also improving PSNR and SSIM. This demonstrates the ef-
+fectiveness of the proposed controllable diffusion framework
+in modeling dynamic propagation behaviors and preserving
+physical consistency under time-varying conditions.
+Furthermore, Table I reports results on the IRT4 (w/o cars)
+dataset, which features unseen layouts and limited supervi-
+sion. Even under this few-shot setting, ControlRadio achieves
+competitive and consistently superior performance, with the
+lowest RMSE and NMSE and the highest PSNR among all
+compared methods. These results indicate that ControlRadio
+generalizes well across different propagation environments
+and layout configurations, benefiting from its prompt-driven
+control mechanism and layout-aware conditioning.
+Qualitative Comparison.We conduct comprehensive visual
+comparisons between ControlRadio and representative base-
+lines, including data-driven CNN-based models, and recent
+diffusion-based generators. As shown in Fig. 4, ControlRadio
+demonstrates superior controllability and prompt-grounded
+generation fidelity. Specifically, our model accurately modu-
+lates spatial field variations in response to complex multimodal
+prompts, while maintaining geometric consistency with layout
+priors. Unlike baseline models that often produce blurry or
+oversmoothed signal maps with poor semantic alignment,
+ControlRadio generates sharper, semantically coherent fields
+that reflect both high-level scene descriptions and low-level
+structural cues. Furthermore, ablation results (see Sec. V-F)
+confirm the importance of both ControlNet and Noise in
+achieving fine-grained controllability and layout-compliant
+synthesis.
+E. Physical Fidelity Analysis
+Table II supplements the global metrics with propagation-
+aware diagnostics. On all 8,080 test maps, ControlRadio
+obtains the lowest LNC Err (0.0032±0.0034) and highest
+BGF1 (0.8818±0.0575); its DAC is comparable to RadioDiff.
+Although RME-GAN and RadioUNet attain higher DAC, their
+substantially worse contrast and boundary scores show that
+DAC alone does not sufficiently characterize local attenuation
+transitions. Fig. 5 likewise shows low residual error and the
+strongest attenuation-boundary overlap. These results support
+macroscopic propagation plausibility and structural consis-
+tency, not strict electromagnetic equivalence.
+F . Ablation Studies
+To better understand the effectiveness of each component
+in the ControlRadio framework, we conduct detailed ablation
+studies by systematically removing or modifying key modules
+===== PAGE 10 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 10
+Fig. 5. Propagation-aware diagnosis for a representative urban scene. Rows show generated maps, radial profiles and absolute errors, and the LOS/NLOS
+proxy with boundary overlays. Red, green, and yellow denote reference-only, prediction-only, and matched boundaries, respectively.
+and evaluating their impact on generation quality and control-
+lability. We focus on four core design aspects: training data
+diversity, prompt conditioning, inference-time UGS sensitivity,
+and training strategy.
+Effect of Training Data Diversity.We investigate the impact
+of training data composition on the generalization performance
+of radio map generation. As shown in Table III, models trained
+on a single dataset exhibit clear performance degradation
+when evaluated on unseen data types, indicating limited cross-
+domain generalization. For example, the model trained on
+DPM performs well on its in-domain test set but shows a
+substantial increase in RMSE when transferred to ITR2 and
+ITR4. Similar trends are observed for models trained on ITR2
+or ITR4 alone, which struggle to generalize across different
+propagation environments.
+In contrast, jointly training on a diverse mixture of datasets
+(DPM, ITR2, and ITR4) consistently achieves the best perfor-
+mance across all test sets, yielding the lowest RMSE values
+of0.0166,0.0381, and0.0210, respectively. This improvement
+is enabled by the use of textual prompts as a shared condi-
+tioning mechanism, which provides a unified representation
+of heterogeneous propagation scenarios across datasets. Such
+a design facilitates joint training without dataset-specific ar-
+chitectural modifications, allowing the model to learn more
+robust and transferable representations and thereby enhancing
+its generalization across varying environments.
+Effect of Hyperparameter Selection.We conduct a sys-
+tematic hyperparameter sensitivity analysis on the ITR4 (w/o
+cars) simulation dataset by evaluating RMSE over a two-
+dimensional parameter grid. As shown in Fig. 7(a), extreme
+parameter values on either side lead to severe performance
+degradation, indicating that overly strong or weak regulariza-
+tion destabilizes the generation process.
+The lowest validation RMSE of0.02758occurs atµ=−0.1
+andσ 2 = 0.001. Neighboring settings remain competitive,
+indicating a stable local region rather than a fragile isolated
+point. These parameters are chosen on validation data and then
+fixed for all test evaluations. This analysis supports robustness
+to modest perturbations within the simulated domain, while
+large frequency, environment, or measurement shifts may
+require recalibration or an adaptive prior.
+Effect of the Adaptation of the Middle Transmitter Map.
+As reported in Table IV, introducing the adaptation of the
+middle transmitter map leads to consistent improvements
+across all evaluation metrics. Specifically, the RMSE de-
+creases from 0.0174 to0.0166, accompanied by a reduction
+in NMSE from 0.0026 to0.0024, indicating more accurate
+signal reconstruction. Meanwhile, perceptual and structural
+quality are further enhanced, with PSNR increasing from
+35.37 to35.86and SSIM improving from 0.9763 to0.9787.
+These results demonstrate that adapting the middle transmitter
+map effectively refines intermediate feature representations,
+enabling better utilization of spatial signal correlations and
+resulting in improved reconstruction fidelity and perceptual
+consistency.
+Effect of the Noise Controller (NC).As reported in Table IV,
+introducing the Noise Controller leads to substantial perfor-
+mance gains across all evaluation metrics. With NC enabled,
+the RMSE is significantly reduced from 0.0246 to0.0166, and
+the NMSE drops from 0.0052 to0.0024, indicating markedly
+improved reconstruction accuracy. Meanwhile, perceptual and
+===== PAGE 11 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 11
+TABLE I
+QUANTITATIVE COMPARISON IN TERMS OFNMSE, RMSE, PSNR,AND
+SSIMFOR DIFFERENT METHODS ON THESRM (W/O CARS),THEDRM
+(DPMW/CARS),AND THEIRT4 (W/O CARS)SIMULATION DATASETS.
+BASELINE RESULTS ARE REFERENCED FROM THERADIODIFF-k 2 PAPER
+FOR FAIR COMPARISON.
+Methods SRM (DPM w/o cars)
+RMSE↓NMSE↓PSNR↑SSIM↑
+RME-GAN 0.0279 0.0096 31.35 0.9431
+RadioUNet 0.0266 0.0088 31.77 0.9466
+RadioDiff 0.0240 0.0072 32.67 0.9560
+RadioDiff-k2 0.0193 0.0043 34.46 0.9773
+ControlRadio0.0166 0.0024 35.86 0.9787
+Methods DRM (DPM w/ cars)
+RMSE↓NMSE↓PSNR↑SSIM↑
+RME-GAN 0.0306 0.0115 30.42 0.9276
+RadioUNet 0.0291 0.0107 30.89 0.9291
+RadioDiff 0.0266 0.0090 31.71 0.9432
+RadioDiff-k2 0.0208 0.0054 33.79 0.9704
+ControlRadio0.0180 0.0028 35.29 0.9759
+Methods IRT4 ( w/o cars)
+RMSE↓NMSE↓PSNR↑SSIM↑
+RME-GAN 0.0340 0.0155 29.74 0.9123
+RadioUNet 0.0344 0.0159 29.64 0.9102
+RadioDiff 0.0309 0.0121 30.44 0.9268
+RadioDiff-k2 0.0236 0.0066 32.68 0.9674
+ControlRadio0.0210 0.0040 33.46 0.9688
+TABLE II
+PROPAGATION-AWARE DIAGNOSTICS. HIGHERDACANDBGF1ARE
+BETTER;LOWERLNC Err IS BETTER AND IS REPORTED IN NORMALIZED
+RSSUNITS.
+NMethod DAC↑LNC Err ↓BGF1↑
+200 RME-GAN 0.9780±0.0280 0.0214±0.0139 0.7246±0.0736
+200 RadioUNet0.9789±0.02600.0233±0.0220 0.6662±0.0988
+200 RadioDiff 0.9663±0.0457 0.0034±0.0057 0.8775±0.0571
+200 ControlRadio 0.9667±0.04580.0031±0.0029 0.8884±0.0444
+8080 RME-GAN 0.9767±0.0366 0.0225±0.0159 0.7199±0.0779
+8080 RadioUNet0.9770±0.03510.0250±0.0223 0.6683±0.0980
+8080 RadioDiff 0.9643±0.0520 0.0035±0.0059 0.8769±0.0567
+8080 ControlRadio 0.9659±0.05050.0032±0.0034 0.8818±0.0575
+TABLE III
+RMSECOMPARISON FOR RADIO MAP GENERATION ACROSS DIFFERENT
+TRAINING AND TESTING DATASET TYPES,EVALUATING CROSS-DOMAIN
+GENERALIZATION PERFORMANCE.
+Trained Dataset Test dataset
+DPM ITR2 ITR4
+DPM 0.0204 0.0641 0.0482
+ITR2 0.0515 0.0448 0.0709
+ITR4 0.0562 0.1051 0.0536
+DPM, ITR2, ITR40.0166 0.0381 0.0210
+structural quality are notably enhanced, with PSNR increasing
+from 32.39 to35.86and SSIM improving from 0.9485 to
+0.9787.
+Joint Fine-tuning vs. Separate Training.We compare two
+training strategies: (1) jointly fine-tuning the V AE Modules
+TABLE IV
+RMSECOMPARISON ILLUSTRATING THE CONTRIBUTION OF MIDDLE
+TRANSMITTER MAP ADAPTATION AND THENOISECONTROLLER. THE
+MIDDLE TRANSMITTER MAP IS DERIVED FROM TEXTUAL PROMPTS VIA
+POSITION EXTRACTION DURING DATA PREPROCESSING,PROVIDING
+PROMPT-CONSISTENT SPATIAL GUIDANCE.
+Transmitter Map Noise Controller RMSE↓NMSE↓PSNR↑SSIM↑
+0.0259 0.0057 32.07 0.9613√ 0.0246 0.0052 32.39 0.9485√ 0.0174 0.0026 35.37 0.9763√ √ 0.0166 0.0024 35.86 0.9787
+TABLE V
+EFFECT OF DIFFERENT FINE-TUNING STRATEGIES ON RADIO MAP
+GENERATION ACCURACY,MEASURED BYRMSE. OPTIMAL
+PERFORMANCE IS OBTAINED WHEN BOTH THEVAEANDSTABLE
+DIFFUSION(SD)MODULES ARE FINE-TUNED.
+Fine-Tuned
+Modules RMSE↓NMSE↓PSNR↑SSIM↑
+V AE SD
+0.0341 0.0109 29.68 0.9556√ 0.0293 0.0072 30.81 0.9382√ 0.0208 0.0037 33.91 0.9738√ √ 0.0166 0.0024 35.86 0.9787
+and the SD U-Net backbone; and (2) freezing parts of the
+pre-trained components and only updating partial modules. As
+shown in Table V, joint optimization, where both the V AE and
+diffusion backbone are unfrozen, yields consistently superior
+performance across all evaluation metrics. In particular, the
+RMSE is reduced to0.0166, compared with 0.0208 and 0.0293
+when only one component is fine-tuned, and 0.0341 when all
+modules are frozen. Similar trends are observed for NMSE,
+PSNR, and SSIM, indicating not only improved reconstruction
+fidelity but also enhanced structural and perceptual consis-
+tency. These gains suggest that jointly adapting latent rep-
+resentation learning and denoising dynamics facilitates better
+feature alignment and task-specific specialization, which is
+especially critical under limited training data. Moreover, full
+joint fine-tuning enables more effective integration of cross-
+modal conditioning signals, alleviating mismatches between
+pre-trained priors and downstream signal characteristics, and
+thereby improving generalization to unseen urban layouts.
+To isolate compression error from diffusion-denoising error,
+we also encode and decode each reference map without
+diffusion sampling. Table VI shows RMSE below 0.0054 and
+SSIM above 0.9948 on all three test sets, far below the end-to-
+end DPM error of 0.0166. Thus, V AE compression is not the
+dominant bottleneck, while the joint fine-tuning results above
+confirm the benefit of radio-domain latent adaptation.
+Effect of Prompt Control.Figure 6 compares different
+prompt formulations to evaluate their effects on controllability
+and generation performance using a conventional text encoder
+(e.g.,the CLIP text encoder). Because the model was trained
+without random prompt dropout, removing the text branch
+only at inference would cause a distribution shift. We therefore
+train a geometry-only baseline, denoted as “No prompt,” that
+removes the CLIP text encoder during both training and
+evaluation while retaining the building layout and transmitter
+===== PAGE 12 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 12
+      Input           no prompt            v1                   v2                    v3                   v4                    v5                   v6         Ground Truth              
+(b)
+(a)
+Fig. 6. Prompt ablation on DPM. “No prompt” denotes the separately trained geometry-only model, not removal of text at test time. (a) Quantitative
+comparison. (b) Representative maps. Prompt v6 best reproduces transmitter-centered intensity and layout-conditioned propagation patterns.
+TABLE VI
+VAE-ONLY RECONSTRUCTION FIDELITY.
+Data RMSE↓NMSE↓PSNR↑SSIM↑
+DPM 0.004509 0.000178 47.3612 0.996372
+IRT2 0.005317 0.000293 45.8893 0.995601
+IRT4 0.005297 0.000237 45.4720 0.994823
+TABLE VII
+SEPARATELY TRAINED GEOMETRY-ONLY BASELINE ONDPM.
+Setting RMSE↓NMSE↓PSNR↑SSIM↑
+Geometry only 0.0337 0.0105 29.89 0.9340
+Prompt v60.0166 0.0024 35.86 0.9787
+map. Because the simulation type is specified only through
+text, with no equivalent nontext task token, this comparison is
+conducted on DPM.
+As shown in Table VII and Fig. 6(a), the geometry-only
+baseline achieves an RMSE of 0.0337, an NMSE of 0.0105,
+a PSNR of 29.89 dB, and an SSIM of 0.9340. Prompt v6
+improves these metrics to 0.0166, 0.0024, 35.86 dB, and
+0.9787, respectively. It reduces RMSE by 50.7% and NMSE
+by 77.1%, while improving PSNR by 5.97 dB and SSIM
+by 0.0447. Prompt variants v1–v5 provide different levels of
+semantic detail, whereas v6 includes the complete condition
+specification: simulation type, operating frequency, transmit
+power, and generation instructions.
+The quantitative and qualitative results indicate that geom-
+etry provides the primary spatial prior, while text supplies
+complementary condition-specific information. The complete
+Prompt v6 achieves the best overall reconstruction fidelity
+and condition alignment. Thus, textual conditioning improves
+controllable radio map synthesis but neither replaces explicit
+geometric inputs nor independently guarantees electromag-
+netic correctness.
+Effect of Uncertainty Guidance Signal (UGS).We evaluate
+UGS as an inference-time scalar rather than an additional
+spatial input. UGS= 1.0is the neutral setting and introduces
+no additional uncertainty term; values away from 1.0 are
+used to test sensitivity to uncertainty-related modulation. As
+illustrated in Fig. 7(b) and Fig. 7(c), UGS= 0.5fails to
+localize signal sources in several cases, whereas larger values
+increasingly produce spatial discontinuities or deviations from
+the ground truth.
+Notably, the neutral UGS= 1.0setting yields the lowest
+===== PAGE 13 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 13
+(a) 
+ (b) 
+   Input          ugs=0.5            1.0               2.0                3.0               4.0               5.0                6.0                7.0               
+Ground Truth
+(c)
+Fig. 7. Hyper-parameter selection and analysis.(a)RMSE comparison under different noise distribution parameters on the IRT4 (w/o cars) dataset. The best
+performance is obtained with noise meanµ=−0.1and varianceσ 2 = 0.001, validating the effectiveness of controlled noise initialization.(b)Sensitivity
+of the Uncertainty Guidance Signal (UGS) under prompt v6, evaluated on the same 80 validation samples. The neutral setting UGS= 1.0, which adds no
+uncertainty term, consistently yields the lowest RMSE; deviations from this setting reduce generation fidelity.(c)Qualitative impact of UGS under prompt
+v6. The neutral UGS= 1.0setting achieves the best fidelity; UGS= 0.5fails to localize signal sources, while larger values introduce noticeable deviations
+from ground truth.
+(a) (b) 
+Fig. 8. The influence of different inference steps.(a)Inference time versus DDIM step count for ControlRadio. The computational cost scales linearly with
+the number of steps, and an 8-GPUs setup achieves an approximately8×speedup over a single GPU.(b)RMSE versus the number of DDIM inference steps
+for ControlRadio. Both validation and test errors decrease rapidly and converge at around 15 steps, indicating that a small number of steps is sufficient for
+accurate inference.
+===== PAGE 14 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 14
+TABLE VIII
+OFFLINE AND ONLINE COST ACCOUNTING.
+Stage Reported setup Cost role
+WinProp labels Detailed ray tracing; minutes per
+2562 map Offline supervision
+Training 100 epochs, approx. 3 days, 8×RTX
+4090, FP16
+One-time offline
+50-step inference 0.44 s/map, 1×RTX 4090 Online evaluation
+15-step inference 0.16 s/map, 1×RTX 4090 Online evaluation
+15-step synthesis 0.02 s/map, 8×RTX 4090 Online large-scale
+reconstruction error and the best structural continuity in the
+evaluated urban scenarios, as reflected in Fig. 7(b). This result
+indicates that adding further uncertainty modulation does not
+improve this benchmark; deviations from the neutral inference
+configuration instead reduce fidelity.
+Results Summary.These ablation studies validate the neces-
+sity and complementarity of the evaluated components and
+provide empirical insights into the design choices behind
+ControlRadio. They also show that cross-modal conditioning
+benefits controllable synthesis, whereas the neutral UGS= 1.0
+inference configuration is more reliable than adding further
+uncertainty modulation on this benchmark.
+G. Cost Accounting
+Beyond reconstruction fidelity, a meaningful efficiency as-
+sessment requires separating offline preparation from online
+generation. Table VIII summarizes the corresponding lifecycle
+costs. ControlRadio does not eliminate the need for high-
+quality simulation or measurements: supervision generation
+and model fitting are offline costs. Its efficiency claim con-
+cerns repeated online generation after those costs have been
+amortized. Consequently, latency should not be interpreted as
+an end-to-end speedup over constructing the training corpus
+and training the model.
+H. Time-Series Radio Map Dataset Construction
+Beyond static synthesis, ControlRadio conditions on road
+maps at successive time steps to generate temporally coherent
+radio maps without rerunning physical simulation for every
+frame (Fig. 9). Road maps 0 and 1 use layouts observed
+during training, whereas road maps 600 and 601 use unseen
+test layouts. The stable outputs across both groups indicate
+generalization to new simulated layouts while maintaining
+spatial coherence and temporal continuity.
+Leveraging this property, we construct a new time-series
+radio map dataset, termedTimeRadioMap, by automatically
+generating radio maps over continuous time steps conditioned
+on road-level dynamics.The TimeRadioMap dataset com-
+prises 8,398 video sequences, each consisting of 150 frames
+spanning approximately 30 seconds at a spatial resolution
+of256×256.All sequences are generated based on 701
+building layouts and their corresponding road maps derived
+from [11]. After the offline supervision and training costs,
+TimeRadioMap can be synthesized with substantially lower
+per-map online latency than repeated ray tracing, providing
+a scalable benchmark for time-dependent radio map recon-
+struction, prediction, and low-altitude sensing applications.
+Notably, using ControlRadio, generating such a dataset
+comprising approximately 1.26 million radio maps requires
+only about 8 hours on a single platform equipped with
+8 NVIDIA GeForce RTX 4090 GPUs.This dataset further
+enables systematic investigation of temporal generalization
+and controllable radio environment modeling, which remains
+largely unexplored in existing radio map benchmarks.
+I. Discussion and Limitations
+The present evidence is limited to simulation benchmarks.
+The adopted diagnostics assess distance-dependent attenua-
+tion, LOS/NLOS contrast, and blockage boundaries; how-
+ever, scalar radio maps cannot verify individual multipath
+components, diffraction mechanisms, or material parameters.
+Practical deployment therefore requires measurement-based
+evaluation and calibration. A direct approach is to fine-tune or
+adapt the model using sparse drive-test samples while retaining
+the simulation-trained prior. Extending the present evaluation
+beyond 2D scalar radio maps may benefit from complementary
+paradigms, including ray tracing, neural radiation fields, and
+3D Gaussian-splatting-based wireless reconstruction.
+Sparse observations could further support online correction.
+Coordinate–value statements such as “the reference level at
+(x, y)is−90dBm” can be serialized in the prompt and
+injected through cross-attention. Because text alone may not
+enforce exact point-wise values, a reliable implementation
+should combine it with an auxiliary sparse-observation map
+and an observation-consistency loss or a sampling-time data-
+consistency step. This design would enable natural-language
+interaction while imposing hard or near-hard measurement
+constraints. Since it changes the conditioning interface and re-
+quires retraining, measurement-guided synthesis is considered
+future work rather than a current capability.
+VI. CONCLUSION
+In this study, we presentedControlRadio, a controllable
+diffusion framework that jointly uses semantic prompts and
+structural layouts. Its layout-aware ControlNet enforces spatial
+conditioning, its Noise Controller supplies a tunable initial
+latent prior, and joint adaptation aligns pretrained components
+with radio-map statistics. On RadioMapSeer simulation bench-
+marks, ControlRadio improves reconstruction and structural
+metrics over the compared 2D baselines. Propagation-aware
+diagnostics support macroscopic plausibility, V AE-only recon-
+struction shows limited compression loss, and the consistently
+trained geometry-only comparison demonstrates complemen-
+tary value from text beyond geometry.
+These findings establish controllable, amortized synthesis
+of simulator-consistent radio maps rather than measurement-
+validated electromagnetic equivalence. Future work will eval-
+uate sim-to-real transfer, learn condition-dependent noise pri-
+ors, and incorporate sparse RF observations through data-
+consistent measurement guidance. Richer LiDAR and RF-
+native inputs, accelerated sampling, and continuous 3D rep-
+resentations may further connect ControlRadio to practical
+wireless digital twins.
+===== PAGE 15 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 15
+Start
+End
+sequential
+2 3 4 5 6
+7 8 9
+1
+Road
+10 11 12
+Start
+End
+sequential
+2 3 4 5 6
+7 8 9
+1
+Road
+10 11 12
+Start
+End
+sequential
+2 3 4 5 6
+7 8 9
+1
+Road
+10 11 12
+Start End
+sequential
+2 3 4 5 6
+7 8 9
+1
+Road
+10 11 12
+road map 1
+road map 0
+road map 600
+road map 601
+      Input                                            Generated Sequential Radio Maps based on the Road Information
+Fig. 9. Illustration of time-series radio map generation conditioned on road maps. Four representative examples are shown with different building–road
+configurations. Road maps 0 and 1 are sampled from the training set, where the corresponding building layouts have been observed during training, while
+road maps 600 and 601 are drawn from the test set and correspond to previously unseen building configurations. These results demonstrate the model’s ability
+to generalize temporal radio map generation to novel urban layouts.
+===== PAGE 16 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 16
+REFERENCES
+[1] D. Romero and S.-J. Kim, “Radio map estimation: A data-driven
+approach to spectrum cartography,”IEEE Signal Processing Magazine,
+vol. 39, no. 6, pp. 53–72, 2022. 1
+[2] D. Romero, T. N. Ha, R. Shrestha, and M. Franceschetti, “Theoretical
+analysis of the radio map estimation problem,”IEEE Transactions on
+Wireless Communications, 2024. 1
+[3] S. Bi, J. Lyu, Z. Ding, and R. Zhang, “Engineering radio maps
+for wireless resource management,”IEEE Wireless Communications,
+vol. 26, no. 2, pp. 133–141, 2019. 1
+[4] C ¸ . Yapar, R. Levie, G. Kutyniok, and G. Caire, “Real-time outdoor local-
+ization using radio maps: A deep learning approach,”IEEE Transactions
+on Wireless Communications, vol. 22, no. 12, pp. 9703–9717, 2023. 1
+[5] X. Wang, X. Wang, S. Mao, J. Zhang, S. C. Periaswamy, and J. Patton,
+“Indoor radio map construction and localization with deep gaussian
+processes,”IEEE Internet of Things Journal, vol. 7, no. 11, pp. 11 238–
+11 249, 2020. 1
+[6] Y . Zeng and X. Xu, “Toward environment-aware 6g communications via
+channel knowledge map,”IEEE Wireless Communications, 2021. 1
+[7] X. Mu, Y . Liu, L. Guo, J. Lin, and R. Schober, “Intelligent reflecting
+surface enhanced indoor robot path planning: A radio map-based ap-
+proach,”IEEE Transactions on Wireless Communications, vol. 20, no. 7,
+pp. 4732–4747, 2021. 1
+[8] S. Zhang and R. Zhang, “Radio map-based 3d path planning for
+cellular-connected uav,”IEEE Transactions on Wireless Communica-
+tions, vol. 20, no. 3, pp. 1975–1989, 2020. 1
+[9] S. Zhang, S. Jiang, W. Lin, Z. Fang, K. Liu, H. Zhang, and K. Chen,
+“Generative AI on spectrumnet: An open benchmark of multiband 3d
+radio maps,”IEEE Transactions on Cognitive Communications and
+Networking, 2024. 1
+[10] Z. Yun and M. F. Iskander, “Ray tracing for radio propagation modeling:
+Principles and applications,”IEEE Access, vol. 3, pp. 1089–1100, 2015.
+1, 2, 3
+[11] C. Yapar, R. Levie, G. Kutyniok, and G. Caire, “Dataset of pathloss and
+toa radio maps with localization application,” IEEE DataPort, 2022. 1,
+6, 14
+[12] J. Hoydis, F. A ¨ıt Aoudia, S. Cammerer, M. Nimier-David, N. Binder,
+G. Marcus, and A. Keller, “Sionna rt: Differentiable ray tracing for
+radio propagation modeling,” in2023 IEEE Globecom Workshops (GC
+Wkshps). IEEE, 2023, pp. 317–321. 1, 3
+[13] B. Feng, M. Zheng, W. Liang, and L. Zhang, “A recent survey on radio
+map estimation methods for wireless networks,”Electronics, vol. 14,
+no. 8, p. 1564, 2025. 1
+[14] J. Ho, A. Jain, and P. Abbeel, “Denoising diffusion probabilistic models,”
+Advances in neural information processing systems, vol. 33, pp. 6840–
+6851, 2020. 1, 3, 4
+[15] R. Rombach, A. Blattmann, D. Lorenz, P. Esser, and B. Ommer, “High-
+resolution image synthesis with latent diffusion models,” inProceedings
+of the IEEE/CVF conference on computer vision and pattern recognition,
+2022, pp. 10 684–10 695. 1, 3, 4, 7
+[16] L. Yang, Z. Zhang, Y . Song, S. Hong, R. Xu, Y . Zhao, W. Zhang,
+B. Cui, and M.-H. Yang, “Diffusion models: A comprehensive survey
+of methods and applications,”ACM computing surveys, vol. 56, no. 4,
+pp. 1–39, 2023. 2
+[17] S. Zhang, B. Choi, F. Ouyang, and Z. Ding, “Physics-inspired machine
+learning for radiomap estimation: Integration of radio propagation mod-
+els and artificial intelligence,”IEEE communications magazine, vol. 62,
+no. 8, pp. 155–161, 2024. 2
+[18] V . Abhayawardhana, I. Wassell, D. Crosby, M. Sellars, and M. Brown,
+“Comparison of empirical propagation path loss models for fixed
+wireless access systems,” in2005 IEEE 61st vehicular technology
+conference, vol. 1. IEEE, 2005, pp. 73–77. 2, 3
+[19] R. Levie, C ¸ . Yapar, G. Kutyniok, and G. Caire, “Radiounet: Fast radio
+map estimation with convolutional neural networks,”IEEE Transactions
+on Wireless Communications, vol. 20, no. 6, pp. 4001–4015, 2021. 2,
+3, 8
+[20] S. Zhang, A. Wijesinghe, and Z. Ding, “Rme-gan: A learning framework
+for radio map estimation based on conditional generative adversarial
+network,”IEEE Internet of Things Journal, vol. 10, no. 20, pp. 18 016–
+18 027, 2023. 2, 3, 8
+[21] X. Li, S. Zhang, H. Li, X. Li, L. Xu, H. Xu, H. Mei, G. Zhu, N. Qi, and
+M. Xiao, “Radiogat: A joint model-based and data-driven framework for
+multi-band radiomap reconstruction via graph attention networks,”IEEE
+Transactions on Wireless Communications, 2024. 2
+[22] Y . Zheng, C. Liao, J. Wang, and S. Liu, “A transformer-based network
+for unifying radio map estimation and optimized site selection,” in
+2024 IEEE International Conference on Acoustics, Speech, and Signal
+Processing Workshops (ICASSPW). IEEE, 2024, pp. 610–614. 2
+[23] X. Wang, K. Tao, N. Cheng, Z. Yin, Z. Li, Y . Zhang, and X. Shen,
+“Radiodiff: An effective generative diffusion model for sampling-free
+dynamic radio map construction,”IEEE Transactions on Cognitive
+Communications and Networking, 2024. 2, 3, 8
+[24] J. Liu, F. Zhou, X. Liu, R. Ding, L. Yuan, and Q. Wu, “Data-and-
+semantic dual-driven spectrum map construction for 6g spectrum man-
+agement,” inGLOBECOM 2024-2024 IEEE Global Communications
+Conference. IEEE, 2024, pp. 139–144. 2
+[25] Y . Zheng, J. Wang, W. Xie, X. Li, S. Mumtaz, and A. Al-Dulaimi,
+“Radio map estimation based on generative artificial intelligence: Evo-
+lution from point-level to cell-level prediction,”IEEE Communications
+Magazine, vol. 63, no. 5, pp. 150–156, 2025. 2
+[26] Z. Liu, Q. Liu, S. Zhang, H. Zhang, and L. Song, “A fine-grained 3d
+radio map construction paradigm with ultra-low sampling rates by large
+generative models,”IEEE Journal on Selected Areas in Communications,
+vol. 44, pp. 4397–4413, 2026. 3
+[27] T. Chen, Z. Zhou, Z. Fang, W. Zou, K. Liu, K. Chen, Y . Zhang, and
+Y . Wang, “RadioDUN: A physics-inspired deep unfolding network for
+radio map estimation,”IEEE Transactions on Cognitive Communications
+and Networking, vol. 12, pp. 7291–7306, 2026. 3
+[28] P. Zheng, X. Wang, W. Chen, R. Sun, L. Wang, Y . Yue, and N. Cheng,
+“RadioAR: Autoregressive modeling for accurate radio map estimation,”
+inCompanion Proceedings of the ACM Web Conference 2026, 2026, pp.
+1233–1241. 3
+[29] S. Fu, Y . Zeng, Z. Wu, D. Wu, J. Xu, S. Jin, C.-X. Wang, and X. Gao,
+“CKMDiff: A generative diffusion model for ckm construction via
+inverse problems with learned priors,”npj Wireless Technology, vol. 2,
+no. 1, p. 35, 2026. 3
+[30] Z. An, L. Shangguan, J. Kaewell, P. Pietraski, and K. Jamieson,
+“Radiotwin: A digital building material twin for wideband, cross-link,
+cross-band wireless channel prediction,” in2025 IEEE International
+Symposium on Dynamic Spectrum Access Networks (DySPAN). IEEE,
+2025, pp. 1–10. 3
+[31] X. Zhao, Z. An, Q. Pan, and L. Yang, “NeRF2: Neural radio-frequency
+radiance fields,” inProceedings of the 29th Annual International Con-
+ference on Mobile Computing and Networking, 2023, pp. 1–15. 3
+[32] L. Zhang, H. Sun, S. Berweger, C. A. Gentile, and R. Q. Hu, “RF-3DGS:
+Wireless channel modeling with radio radiance field and 3d gaussian
+splatting,”IEEE Transactions on Wireless Communications, vol. 25, pp.
+10 419–10 433, 2026. 3
+[33] A. Q. Nichol and P. Dhariwal, “Improved denoising diffusion probabilis-
+tic models,” inInternational conference on machine learning. PMLR,
+2021, pp. 8162–8171. 3
+[34] Z. Kong, W. Ping, J. Huang, K. Zhao, and B. Catanzaro, “Diffwave: A
+versatile diffusion model for audio synthesis,” inInternational Confer-
+ence on Learning Representations, 2021. 3
+[35] L. Zhang, A. Rao, and M. Agrawala, “Adding conditional control
+to text-to-image diffusion models,” inProceedings of the IEEE/CVF
+international conference on computer vision, 2023, pp. 3836–3847. 3,
+4, 5
+[36] X. Huang, C. Salaun, C. Vasconcelos, C. Theobalt, C. Oztireli, and
+G. Singh, “Blue noise for diffusion models,” inACM SIGGRAPH 2024
+conference papers, 2024, pp. 1–11. 3
+[37] P. Chang, J. Tang, M. Gross, and V . C. Azevedo, “How i warped your
+noise: a temporally-correlated noise prior for diffusion models,” inThe
+Twelfth International Conference on Learning Representations, 2024. 3
+[38] X. Guo, J. Liu, M. Cui, J. Li, H. Yang, and D. Huang, “Initno:
+Boosting text-to-image diffusion models via initial noise optimization,”
+inProceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, 2024, pp. 9380–9389. 3
+[39] L. Eyring, S. Karthik, K. Roth, A. Dosovitskiy, and Z. Akata, “Reno:
+Enhancing one-step text-to-image models through reward-based noise
+optimization,”Advances in Neural Information Processing Systems,
+vol. 37, pp. 125 487–125 519, 2024. 3
+[40] Z. Zhou, S. Shao, L. Bai, S. Zhang, Z. Xu, B. Han, and Z. Xie, “Golden
+noise for diffusion models: A learning framework,” inProceedings of
+the IEEE/CVF International Conference on Computer Vision, 2025, pp.
+17 688–17 697. 3
+[41] D. Geng, I. Park, and A. Owens, “Factorized diffusion: Perceptual
+illusions by noise decomposition,” inEuropean Conference on Computer
+Vision. Springer, 2024, pp. 366–384. 3
+[42] T. Shirakawa and S. Uchida, “Noisecollage: A layout-aware text-to-
+image diffusion model based on noise cropping and merging,” inPro-
+===== PAGE 17 =====
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2021 17
+ceedings of the IEEE/CVF conference on computer vision and pattern
+recognition, 2024, pp. 8921–8930. 3
+[43] M. N. Everaert, A. Fitsios, M. Bocchio, S. Arpa, S. S ¨usstrunk, and
+R. Achanta, “Exploiting the signal-leak bias in diffusion models,” in
+Proceedings of the IEEE/CVF Winter Conference on Applications of
+Computer Vision, 2024, pp. 4025–4034. 3
+[44] G. Boccolini, G. Hernandez-Penaloza, and B. Beferull-Lozano, “Wire-
+less sensor network for spectrum cartography based on kriging inter-
+polation,” in2012 IEEE 23rd International Symposium on Personal,
+Indoor and Mobile Radio Communications-(PIMRC). IEEE, 2012, pp.
+1565–1570. 3
+[45] G. Y . Lu and D. W. Wong, “An adaptive inverse-distance weighting
+spatial interpolation technique,”Computers & geosciences, vol. 34,
+no. 9, pp. 1044–1055, 2008. 3
+[46] Y . Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, and
+B. Poole, “Score-based generative modeling through stochastic differ-
+ential equations,” inInternational Conference on Learning Representa-
+tions, 2021. 4
+[47] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal,
+G. Sastry, A. Askell, P. Mishkin, J. Clarket al., “Learning transferable
+visual models from natural language supervision,” inInternational
+conference on machine learning. PmLR, 2021, pp. 8748–8763. 4
+[48] E. Perez, F. Strub, H. De Vries, V . Dumoulin, and A. Courville, “Film:
+Visual reasoning with a general conditioning layer,” inProceedings of
+the AAAI conference on artificial intelligence, vol. 32, no. 1, 2018. 5
+[49] J. Johnson, A. Alahi, and L. Fei-Fei, “Perceptual losses for real-time
+style transfer and super-resolution,” inEuropean conference on computer
+vision. Springer, 2016, pp. 694–711. 6
+[50] R. Hoppe, G. W ¨olfle, and U. Jakobus, “Wave propagation and radio
+network planning software winprop added to the electromagnetic solver
+package feko,” in2017 International Applied Computational Electro-
+magnetics Society Symposium-Italy (ACES). IEEE, 2017, pp. 1–2. 6
+[51] X. Wang, Q. Zhang, N. Cheng, R. Sun, Z. Li, S. Cui, and X. Shen,
+“Radiodiff-k2: Helmholtz equation informed generative diffusion model
+for multi-path aware radio map construction,”IEEE Journal on Selected
+Areas in Communications, 2025. 7, 8
+[52] 3rd Generation Partnership Project (3GPP), “Study on channel model for
+frequencies from 0.5 to 100 ghz,” 3GPP, Technical Report TR 38.901,
+Version 19.2.0, Feb 2026. 8
+[53] D. R. Martin, C. C. Fowlkes, and J. Malik, “Learning to detect natural
+image boundaries using local brightness, color, and texture cues,”IEEE
+Transactions on Pattern Analysis and Machine Intelligence, vol. 26,
+no. 5, pp. 530–549, May 2004. 8

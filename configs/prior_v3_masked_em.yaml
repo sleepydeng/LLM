@@ -1,0 +1,16 @@
+# 路线 A 的**关键对照 2/3（容量对齐）**：几何真实，LLM 的电磁维度置零。
+#
+# prior_dim 与 prior_real_v3 **完全相同（64）**，条件分支参数量逐位相同，
+# 唯一差别是电磁那 22 维是真值还是零。所以
+#     prior_real_v3 − prior_v3_masked_em
+# 就是 **LLM 电磁内容的净贡献**，里面不含任何容量效应。
+#
+# 只用 prior_geometry_only（dim 42）去比会混入容量效应 —— 这正是本项目一路在防的错误。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real
+  prior_groups: [em_num, local_ratio, global_cat, sectors]   # 64 维
+  zero_groups: [em_num, global_cat]                          # 把 LLM 的 22 维置零

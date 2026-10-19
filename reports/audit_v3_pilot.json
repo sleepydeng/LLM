@@ -1,0 +1,529 @@
+{
+  "n_files": 24,
+  "n_unique_vector": 24,
+  "unique_ratio": 1.0,
+  "per_key": {
+    "scene_type": {
+      "unique": 1,
+      "top1_value": "urban",
+      "top1_share": 1.0,
+      "entropy_bits": -0.0
+    },
+    "dominant_material": {
+      "unique": 2,
+      "top1_value": "brick",
+      "top1_share": 0.5,
+      "entropy_bits": 1.0
+    },
+    "confidence": {
+      "unique": 2,
+      "top1_value": "high",
+      "top1_share": 0.7916666666666666,
+      "entropy_bits": 0.7382848661434506
+    },
+    "los_ratio": {
+      "unique": 6,
+      "top1_value": "0.0",
+      "top1_share": 0.5416666666666666,
+      "entropy_bits": 1.997224320061398
+    },
+    "reflection_ratio": {
+      "unique": 9,
+      "top1_value": "0.5",
+      "top1_share": 0.5,
+      "entropy_bits": 2.427694271103767
+    },
+    "diffraction_ratio": {
+      "unique": 11,
+      "top1_value": "0.3",
+      "top1_share": 0.5,
+      "entropy_bits": 2.6258145836939115
+    },
+    "scattering_ratio": {
+      "unique": 6,
+      "top1_value": "0.20000000000000004",
+      "top1_share": 0.5416666666666666,
+      "entropy_bits": 1.986196715624298
+    },
+    "permittivity": {
+      "unique": 11,
+      "top1_value": "5.333333333333333",
+      "top1_share": 0.16666666666666666,
+      "entropy_bits": 3.2201755214643453
+    },
+    "penetration_loss_db": {
+      "unique": 4,
+      "top1_value": "10.0",
+      "top1_share": 0.8333333333333334,
+      "entropy_bits": 0.9000224216483541
+    },
+    "pathloss_min_db": {
+      "unique": 3,
+      "top1_value": "40.0",
+      "top1_share": 0.8333333333333334,
+      "entropy_bits": 0.785235442391543
+    },
+    "pathloss_max_db": {
+      "unique": 6,
+      "top1_value": "80.0",
+      "top1_share": 0.7916666666666666,
+      "entropy_bits": 1.2220198859116511
+    },
+    "tx_local_building_ratio_50m": {
+      "unique": 23,
+      "top1_value": "0.2739",
+      "top1_share": 0.08333333333333333,
+      "entropy_bits": 4.501629167387822
+    },
+    "tx_local_building_ratio_100m": {
+      "unique": 24,
+      "top1_value": "0.334",
+      "top1_share": 0.041666666666666664,
+      "entropy_bits": 4.584962500721156
+    }
+  },
+  "missing_keys": {},
+  "intra_map_unique_ratio_mean": 1.0,
+  "n_maps": 3,
+  "samples_per_map_mean": 8.0,
+  "numeric": {
+    "keys": [
+      "los_ratio",
+      "reflection_ratio",
+      "diffraction_ratio",
+      "scattering_ratio",
+      "pathloss_min_db",
+      "pathloss_max_db",
+      "tx_local_building_ratio_50m",
+      "tx_local_building_ratio_100m"
+    ],
+    "unique_min": 3,
+    "entropy_min": 0.785235442391543,
+    "failing_unique": [
+      "pathloss_min_db"
+    ],
+    "failing_entropy": [
+      "pathloss_min_db"
+    ]
+  },
+  "material_numeric": {
+    "keys": [
+      "permittivity",
+      "penetration_loss_db"
+    ],
+    "unique_min": 4,
+    "note": "材料属性（介电常数 / 穿透损耗）在单一材质数据集上本就应近乎恒定，因此不参加硬门槛；报告出来只为让读者判断物理是否合理。",
+    "values": {
+      "permittivity": {
+        "unique": 11,
+        "top1_value": "5.333333333333333",
+        "top1_share": 0.16666666666666666
+      },
+      "penetration_loss_db": {
+        "unique": 4,
+        "top1_value": "10.0",
+        "top1_share": 0.8333333333333334
+      }
+    }
+  },
+  "categorical": {
+    "keys": [
+      "scene_type",
+      "dominant_material",
+      "confidence"
+    ],
+    "unique_min": 1,
+    "constant_keys": [
+      "scene_type"
+    ]
+  },
+  "within_map_variation": {
+    "scene_type": {
+      "maps_with_variation": 0,
+      "maps_considered": 3,
+      "share": 0.0
+    },
+    "dominant_material": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "confidence": {
+      "maps_with_variation": 2,
+      "maps_considered": 3,
+      "share": 0.6666666666666666
+    },
+    "los_ratio": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "reflection_ratio": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "diffraction_ratio": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "scattering_ratio": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "permittivity": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "penetration_loss_db": {
+      "maps_with_variation": 2,
+      "maps_considered": 3,
+      "share": 0.6666666666666666
+    },
+    "pathloss_min_db": {
+      "maps_with_variation": 2,
+      "maps_considered": 3,
+      "share": 0.6666666666666666
+    },
+    "pathloss_max_db": {
+      "maps_with_variation": 2,
+      "maps_considered": 3,
+      "share": 0.6666666666666666
+    },
+    "tx_local_building_ratio_50m": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    },
+    "tx_local_building_ratio_100m": {
+      "maps_with_variation": 3,
+      "maps_considered": 3,
+      "share": 1.0
+    }
+  },
+  "fields_varying_within_map": 12,
+  "sectors": {
+    "n_with_sectors": 24,
+    "unique_profiles": 13,
+    "sector_profile_unique_ratio": 0.5416666666666666,
+    "top1_profile_share": 0.5,
+    "top1_profile": "blocked|blocked|blocked|blocked|blocked|blocked|blocked|blocked",
+    "per_azimuth": {
+      "0": {
+        "blocked": 19,
+        "dense": 4,
+        "sparse": 1
+      },
+      "45": {
+        "blocked": 16,
+        "dense": 8
+      },
+      "90": {
+        "blocked": 16,
+        "dense": 6,
+        "sparse": 2
+      },
+      "135": {
+        "blocked": 18,
+        "dense": 5,
+        "sparse": 1
+      },
+      "180": {
+        "blocked": 18,
+        "sparse": 2,
+        "open": 1,
+        "dense": 3
+      },
+      "225": {
+        "blocked": 17,
+        "sparse": 5,
+        "open": 1,
+        "dense": 1
+      },
+      "270": {
+        "blocked": 15,
+        "sparse": 6,
+        "dense": 3
+      },
+      "315": {
+        "blocked": 15,
+        "sparse": 5,
+        "dense": 4
+      }
+    }
+  },
+  "reasoning": {
+    "n": 24,
+    "unique": 24,
+    "unique_ratio": 1.0,
+    "top1_share": 0.041666666666666664,
+    "top1_head": "The high obstruction density and lack of line-of-sight paths suggest significant reflections and diffractions. The building fraction indicates dense urban conditions with likely brick construction.",
+    "mean_len": 474.2916666666667
+  },
+  "content_contamination": {
+    "n": 24,
+    "n_hit": 2,
+    "share": 0.08333333333333333,
+    "examples": [
+      "Based on the provided measurements, the majority of the signal paths are obstructed by buildings, indicating a high level of diffraction. The building fractions",
+      "Based on the provided measurements, the scene type is urban due to the presence of multiple buildings with varying densities. The LOS ratio is low because the t"
+    ],
+    "by_group": {
+      "mmwave": {
+        "n_hit": 0,
+        "share": 0.0,
+        "patterns": [
+          "28\\s*ghz",
+          "毫米波",
+          "mmwave",
+          "millimeter",
+          "mm\\s*wave"
+        ],
+        "example": null
+      },
+      "height": {
+        "n_hit": 2,
+        "share": 0.08333333333333333,
+        "patterns": [
+          "建筑高度",
+          "楼高",
+          "楼层",
+          "building height",
+          "taller",
+          "天线高度",
+          "tx height",
+          "发射机高度"
+        ],
+        "example": "Based on the provided measurements, the majority of the signal paths are obstructed by buildings, indicating a high level of diffraction. The building fractions"
+      }
+    }
+  },
+  "field_consistency_mean": 0.9319444444444445,
+  "n_with_provenance": 24,
+  "n_parse_failed": 0,
+  "parse_failed": [],
+  "formats": {
+    "v2": 24
+  },
+  "sector_check": {
+    "n_checked": 192,
+    "agreement_strict": 1.0,
+    "agreement_adjacent": 1.0,
+    "n_shifted_checked": 192,
+    "agreement_strict_shifted": 0.5520833333333334,
+    "agreement_gain": 0.44791666666666663,
+    "subsets": {
+      "tx_on_building": {
+        "n_sectors": 96,
+        "agreement_strict": 1.0,
+        "agreement_adjacent": 1.0,
+        "agreement_strict_shifted": 0.6458333333333334,
+        "agreement_gain": 0.35416666666666663
+      },
+      "tx_on_street": {
+        "n_sectors": 96,
+        "agreement_strict": 1.0,
+        "agreement_adjacent": 1.0,
+        "agreement_strict_shifted": 0.4583333333333333,
+        "agreement_gain": 0.5416666666666667
+      }
+    },
+    "scene_type_check": {
+      "n": 24,
+      "program_classes": [
+        "dense_urban",
+        "suburban",
+        "urban"
+      ],
+      "llm_classes": [
+        "urban"
+      ],
+      "agreement_rate": 0.7083333333333334,
+      "follows_geometry": false,
+      "note": "程序侧分档按 100 m 建筑占比：>0.35 dense_urban / >0.22 urban / >0.12 suburban / 其余 rural。"
+    },
+    "per_azimuth_strict": {
+      "0": 1.0,
+      "45": 1.0,
+      "90": 1.0,
+      "135": 1.0,
+      "180": 1.0,
+      "225": 1.0,
+      "270": 1.0,
+      "315": 1.0
+    },
+    "confusion_expected_vs_llm": {
+      "blocked->blocked": 134,
+      "dense->dense": 34,
+      "sparse->sparse": 22,
+      "open->open": 2
+    },
+    "note": "粗检：按扇区内最近建筑距离与建筑像素占比判定，不是严格几何遮挡；agreement_adjacent 允许相邻等级（±1 档）。agreement_gain = 本 Tx 一致率 − 同图另一 Tx 一致率，是自校准判据：偷懒（恒答某标签 / 只记方位先验）在两侧得分相同，gain ≈ 0。subsets 把「Tx 落在建筑像素内」与「Tx 在街上」分开报告，因为前者的真值常是 8 方位全 blocked，本就没有可区分的方向信息。"
+  },
+  "gate": {
+    "pass": false,
+    "hard_failures": 4,
+    "warnings": 4,
+    "results": [
+      {
+        "gate": "unique_ratio",
+        "value": 1.0,
+        "threshold": 0.5,
+        "op": ">=",
+        "severity": "fail",
+        "pass": true,
+        "note": "唯一字段向量 / 样本数；上一版是 0.0138（55 / 4000）"
+      },
+      {
+        "gate": "intra_map_unique_ratio_mean",
+        "value": 1.0,
+        "threshold": 0.5,
+        "op": ">=",
+        "severity": "fail",
+        "pass": true,
+        "note": "同一张地图内不同 Tx 的唯一向量占比；上一版是 0.104"
+      },
+      {
+        "gate": "numeric_unique_min",
+        "value": 3.0,
+        "threshold": 5,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "恒定或量化的几何条件字段：pathloss_min_db"
+      },
+      {
+        "gate": "numeric_entropy_min",
+        "value": 0.7852,
+        "threshold": 1.0,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "熵过低的几何条件字段：pathloss_min_db"
+      },
+      {
+        "gate": "categorical_min_unique",
+        "value": 1.0,
+        "threshold": 2,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "退化成单一常量的类别字段：scene_type"
+      },
+      {
+        "gate": "scene_type_follows_geometry",
+        "value": 0.0,
+        "threshold": 1.0,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "程序侧分档 ['dense_urban', 'suburban', 'urban']（3 类），LLM 侧 ['urban']（1 类），逐样本一致率 0.708。程序侧只有一类时 LLM 恒定属合法"
+      },
+      {
+        "gate": "sector_consistency_strict",
+        "value": 1.0,
+        "threshold": 0.7,
+        "op": ">=",
+        "severity": "fail",
+        "pass": true,
+        "note": "4 类随机猜测的期望严格一致率约 0.25；但注意偷懒基线取决于真值分布，实测 maps 0-3 上「永远回答 blocked」就能拿 0.593"
+      },
+      {
+        "gate": "sector_consistency_gain",
+        "value": 0.4479,
+        "threshold": 0.1,
+        "op": ">=",
+        "severity": "fail",
+        "pass": true,
+        "note": "自校准判据：本 Tx 一致率 1.000 − 同图另一 Tx 一致率 0.552；偷懒策略在此项上必然接近 0"
+      },
+      {
+        "gate": "max_top1_share[scene_type]",
+        "value": 1.0,
+        "threshold": 0.4,
+        "op": "<",
+        "severity": "warn",
+        "pass": false,
+        "note": "仅提示：类别字段的取值不均衡可能只是数据本身的性质，不阻断训练"
+      },
+      {
+        "gate": "confidence_top1_share",
+        "value": 0.7917,
+        "threshold": 0.9,
+        "op": "<",
+        "severity": "warn",
+        "pass": true,
+        "note": "自报置信度几乎恒定是上一版的病症之一（97.9% 都是 medium）"
+      },
+      {
+        "gate": "fields_varying_within_map",
+        "value": 12.0,
+        "threshold": 3,
+        "op": ">=",
+        "severity": "warn",
+        "pass": true,
+        "note": "注意：上一版此指标是 9/13（通过）却依然完全坍缩 —— 它不足以判定健康，仅供参考"
+      },
+      {
+        "gate": "scene_type_classes",
+        "value": 1.0,
+        "threshold": 3,
+        "op": ">=",
+        "severity": "warn",
+        "pass": false,
+        "note": "若数据集本身只有两类，这一条不达标属正常"
+      },
+      {
+        "gate": "sector_profile_unique_ratio",
+        "value": 0.5417,
+        "threshold": 0.5,
+        "op": ">=",
+        "severity": "warn",
+        "pass": true
+      },
+      {
+        "gate": "reasoning_repeat_share",
+        "value": 0.0417,
+        "threshold": 0.1,
+        "op": "<",
+        "severity": "warn",
+        "pass": true
+      },
+      {
+        "gate": "content_contamination_share",
+        "value": 0.0833,
+        "threshold": 0.05,
+        "op": "<",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "mmwave_hallucination_share",
+        "value": 0.0,
+        "threshold": 0.02,
+        "op": "<",
+        "severity": "warn",
+        "pass": true
+      },
+      {
+        "gate": "height_hallucination_share",
+        "value": 0.0833,
+        "threshold": 0.05,
+        "op": "<",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "field_consistency_mean",
+        "value": 0.9319,
+        "threshold": 0.8,
+        "op": ">=",
+        "severity": "warn",
+        "pass": true
+      }
+    ]
+  }
+}

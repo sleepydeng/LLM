@@ -1,0 +1,2395 @@
+{
+  "n_samples": 371,
+  "maps": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "samples_per_map": {
+    "0": 80,
+    "1": 80,
+    "2": 80,
+    "3": 80,
+    "4": 51
+  },
+  "model": "glm-4v-flash",
+  "temperature": 0.7,
+  "n_rounds_per_sample": 3,
+  "v3_include_image": true,
+  "generated_at_range": [
+    "2026-10-13T14:23:52+00:00",
+    "2026-10-13T14:34:54+00:00"
+  ],
+  "thresholds": {
+    "CV_EPS": 0.05,
+    "CAT_TOP1_CONST": 0.95,
+    "CONSISTENCY_HI": 0.7,
+    "RHO_STRONG": 0.5,
+    "R2_HI": 0.5,
+    "R2_ENC": 0.8,
+    "N_PERM": 4000,
+    "SHUFFLE_SEED": 20260101,
+    "WITHIN_MAP_MIN_SIGN_AGREEMENT": 0.6
+  },
+  "fields": [
+    {
+      "field": "los_ratio",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": true,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.9757412398921833,
+        "median": 1.0,
+        "min": 0.0,
+        "std": 0.1538514629954753,
+        "share_all_rounds_agree": 0.9757412398921833,
+        "share_below_2of3": 0.02425876010781671,
+        "share_zero": 0.02425876010781671,
+        "tolerance_abs": 0.1,
+        "min_within_sample_range_implied": 0.2,
+        "tolerance_note": "±0.10 量程单位（= 量程 0..1 的 10%）"
+      },
+      "grounding": {
+        "tested": 3,
+        "n_testable": 3,
+        "best_driver": "min_dist",
+        "best_expected_sign": "+",
+        "rho_absmax": 0.7283902457365634,
+        "rho_absmax_signed": 0.7283902457365634,
+        "rho_absmax_shuffled": 0.011377859034584537,
+        "p_permutation": 0.00024993751562109475,
+        "any_supported": true,
+        "direction_correct_any": true,
+        "n_pairs_supported": 3
+      },
+      "reproducibility": {
+        "std": 0.07087938075682994,
+        "r2": {
+          "S1": 0.4001502089721074,
+          "S2": 0.3710552368017075,
+          "S3": 0.4335763927433658,
+          "gbm_S3": 0.30437187144934574
+        },
+        "r2_best": 0.4335763927433658,
+        "r2_in_sample_gbm": 0.8710187909311694,
+        "r2_shuffled": -0.00306169873648221,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.7647166917653301,
+            "spearman": 0.7283902457365634
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.700756751038488,
+            "spearman": 0.6693352164441635
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.6809530569921558,
+            "spearman": 0.6359724301294599
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.6454154659668339,
+            "spearman": 0.5886068661479495
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.6294150272682352,
+            "spearman": -0.18067524093087087
+          },
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.6112599763173424,
+            "spearman": -0.10393878793148421
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.6029757933634597,
+            "spearman": 0.7068614480056963
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.5875898326342068,
+            "spearman": 0.6211394073840818
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.5722279537047186,
+            "spearman": 0.6226252946277292
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.5251261833676713,
+            "spearman": 0.6359103908708291
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.47697805869755994,
+            "spearman": 0.6537036732411048
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.40403750882262135,
+            "spearman": -0.7131076733633033
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.25470936796491694,
+            "spearman": -0.5607784986969405
+          }
+        ],
+        "best_driver": "min_dist",
+        "best_in_sample_r2": 0.7647166917653301,
+        "best_spearman": 0.7283902457365634,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 0.07087938075682994,
+        "range": 1.0,
+        "std_over_range": 0.07087938075682994,
+        "unique": 13,
+        "min": 0.0,
+        "max": 0.7666666666666666,
+        "mean": 0.06693620844564241
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.0931545907498808,
+            "std_over_range": 0.0931545907498808,
+            "unique": 8,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.743905297702766
+          },
+          "1": {
+            "n": 80,
+            "std": 0.03756418118811235,
+            "std_over_range": 0.03756418118811235,
+            "unique": 7,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.6106422878574778
+          },
+          "2": {
+            "n": 80,
+            "std": 0.06473101394746314,
+            "std_over_range": 0.06473101394746314,
+            "unique": 9,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.7951945616502578
+          },
+          "3": {
+            "n": 80,
+            "std": 0.0854194613363957,
+            "std_over_range": 0.0854194613363957,
+            "unique": 9,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.7539849976558838
+          },
+          "4": {
+            "n": 51,
+            "std": 0.036149168128169505,
+            "std_over_range": 0.036149168128169505,
+            "unique": 6,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.6028054298642533
+          }
+        },
+        "sign_agreement_with_expected": "5/5",
+        "std_over_range_min": 0.036149168128169505,
+        "std_over_range_max": 0.0931545907498808,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "真实且有残余信息",
+      "verdict": "接地成立（ρ=+0.73 ↔ min_dist，p=0.0002）且 R²=0.43 < 0.8 → 随几何变化、但几何特征拟合不出来；逐图 ρ 同号 5/5",
+      "in_condition_vector": true,
+      "signal": "residual",
+      "n": 371
+    },
+    {
+      "field": "reflection_ratio",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": true,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.8697214734950584,
+        "median": 1.0,
+        "min": 0.0,
+        "std": 0.23110140400032744,
+        "share_all_rounds_agree": 0.7008086253369272,
+        "share_below_2of3": 0.2991913746630728,
+        "share_zero": 0.029649595687331536,
+        "tolerance_abs": 0.1,
+        "min_within_sample_range_implied": 0.2,
+        "tolerance_note": "±0.10 量程单位（= 量程 0..1 的 10%）"
+      },
+      "grounding": {
+        "tested": 2,
+        "n_testable": 2,
+        "best_driver": "min_dist",
+        "best_expected_sign": "-",
+        "rho_absmax": 0.219618035564475,
+        "rho_absmax_signed": -0.219618035564475,
+        "rho_absmax_shuffled": 0.12416687620582934,
+        "p_permutation": 0.00024993751562109475,
+        "any_supported": true,
+        "direction_correct_any": true,
+        "n_pairs_supported": 1
+      },
+      "reproducibility": {
+        "std": 0.0998077495271318,
+        "r2": {
+          "S1": 0.11251411773378095,
+          "S2": 0.15627150843267956,
+          "S3": 0.1418364260674816,
+          "gbm_S3": 0.2617978171017955
+        },
+        "r2_best": 0.2617978171017955,
+        "r2_in_sample_gbm": 0.574812842496227,
+        "r2_shuffled": -0.019332767602062928,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.28660874072905407,
+            "spearman": -0.2608299630819412
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.2852756498972536,
+            "spearman": -0.22550307023831065
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.27952600119028315,
+            "spearman": -0.27264256692132527
+          },
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.26770796189650004,
+            "spearman": -0.219618035564475
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.25055211870903005,
+            "spearman": -0.2663338323107039
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.24576314653757292,
+            "spearman": -0.33279244813024483
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.23891965756616484,
+            "spearman": -0.30773469757036404
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.22204090774529928,
+            "spearman": -0.2390830879570989
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.21448177407104663,
+            "spearman": -0.01280264700836825
+          },
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.21266588634512118,
+            "spearman": -0.023247802188763843
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.19967557278567305,
+            "spearman": -0.26058016106707527
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.19341139335409485,
+            "spearman": 0.2334946197392941
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.15796828943567454,
+            "spearman": 0.39017194744522804
+          }
+        ],
+        "best_driver": "dist_az0",
+        "best_in_sample_r2": 0.28660874072905407,
+        "best_spearman": -0.2608299630819412,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 0.0998077495271318,
+        "range": 1.0,
+        "std_over_range": 0.0998077495271318,
+        "unique": 23,
+        "min": 0.10000000000000002,
+        "max": 0.5,
+        "mean": 0.3581311769991016
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.1020023062783931,
+            "std_over_range": 0.1020023062783931,
+            "unique": 18,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.16812001875293014
+          },
+          "1": {
+            "n": 80,
+            "std": 0.10249576549518738,
+            "std_over_range": 0.10249576549518738,
+            "unique": 17,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.22583216127519926
+          },
+          "2": {
+            "n": 80,
+            "std": 0.09849540845192284,
+            "std_over_range": 0.09849540845192284,
+            "unique": 20,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.18837318330989217
+          },
+          "3": {
+            "n": 80,
+            "std": 0.10122170386499792,
+            "std_over_range": 0.10122170386499792,
+            "unique": 18,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.1342006563525551
+          },
+          "4": {
+            "n": 51,
+            "std": 0.08943627115137635,
+            "std_over_range": 0.08943627115137635,
+            "unique": 16,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.12063348416289593
+          }
+        },
+        "sign_agreement_with_expected": "2/5",
+        "std_over_range_min": 0.08943627115137635,
+        "std_over_range_max": 0.10249576549518738,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "接地不稳（地图间混淆）",
+      "verdict": "总体 ρ=-0.22（↔ min_dist，p=0.0002，方向与预期- 相符）**成立**，但地图内部单独算时只有 2/5 张图的 ρ 与预期同号（逐图 ρ 反复变号）→ 这段总体相关主要来自**地图之间的几何分布差异**，而不是字段跟着本 Tx 的几何走；对「同图不同 Tx」的条件向量没有分辨力",
+      "in_condition_vector": false,
+      "signal": "confounded",
+      "n": 371
+    },
+    {
+      "field": "diffraction_ratio",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": true,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.8418688230008986,
+        "median": 1.0,
+        "min": 0.0,
+        "std": 0.2388619434227973,
+        "share_all_rounds_agree": 0.628032345013477,
+        "share_below_2of3": 0.3719676549865229,
+        "share_zero": 0.029649595687331536,
+        "tolerance_abs": 0.1,
+        "min_within_sample_range_implied": 0.2,
+        "tolerance_note": "±0.10 量程单位（= 量程 0..1 的 10%）"
+      },
+      "grounding": {
+        "tested": 2,
+        "n_testable": 2,
+        "best_driver": "n_blocked",
+        "best_expected_sign": "+",
+        "rho_absmax": 0.1342379158569055,
+        "rho_absmax_signed": -0.1342379158569055,
+        "rho_absmax_shuffled": 0.0544678841087849,
+        "p_permutation": 0.00849787553111722,
+        "any_supported": false,
+        "direction_correct_any": false,
+        "n_pairs_supported": 0
+      },
+      "reproducibility": {
+        "std": 0.09382517069438297,
+        "r2": {
+          "S1": 0.04537711870326211,
+          "S2": 0.034091934809643565,
+          "S3": 0.01671810334324586,
+          "gbm_S3": 0.049442052510972334
+        },
+        "r2_best": 0.049442052510972334,
+        "r2_in_sample_gbm": 0.5099101905793848,
+        "r2_shuffled": -0.009259821624294062,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.2711987056425115,
+            "spearman": 0.143612658828727
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.2588203394461428,
+            "spearman": 0.10321335160044838
+          },
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.197632971254874,
+            "spearman": 0.11280546697466966
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.19437739284288136,
+            "spearman": 0.1544464993643326
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.1856831172435882,
+            "spearman": 0.18280854543788203
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.18404994924725626,
+            "spearman": 0.12058222904236295
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.18038439245943705,
+            "spearman": 0.15070557906833013
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.17928281125082823,
+            "spearman": 0.1454778315399131
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.16073517790326075,
+            "spearman": 0.22193322789792663
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.15720152397982912,
+            "spearman": 0.15860524466732623
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.14111185326410225,
+            "spearman": 0.19953658553780282
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.1350687413384919,
+            "spearman": -0.1342379158569055
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.026244831879381314,
+            "spearman": -0.31079436100738594
+          }
+        ],
+        "best_driver": "r50",
+        "best_in_sample_r2": 0.2711987056425115,
+        "best_spearman": 0.143612658828727,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 0.09382517069438297,
+        "range": 1.0,
+        "std_over_range": 0.09382517069438297,
+        "unique": 31,
+        "min": 0.05000000000000001,
+        "max": 0.6999999999999998,
+        "mean": 0.3954627133872416
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.0942143592352626,
+            "std_over_range": 0.0942143592352626,
+            "unique": 16,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.32623066104078763
+          },
+          "1": {
+            "n": 80,
+            "std": 0.08984554647962369,
+            "std_over_range": 0.08984554647962369,
+            "unique": 19,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.37203469292076885
+          },
+          "2": {
+            "n": 80,
+            "std": 0.09579709459755724,
+            "std_over_range": 0.09579709459755724,
+            "unique": 20,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.1720112517580872
+          },
+          "3": {
+            "n": 80,
+            "std": 0.10649705753629482,
+            "std_over_range": 0.10649705753629482,
+            "unique": 22,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": 0.20140646976090015
+          },
+          "4": {
+            "n": 51,
+            "std": 0.06957024361168718,
+            "std_over_range": 0.06957024361168718,
+            "unique": 12,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": 0.046153846153846156
+          }
+        },
+        "sign_agreement_with_expected": "2/5",
+        "std_over_range_min": 0.06957024361168718,
+        "std_over_range_max": 0.10649705753629482,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "自信地错（系统性幻觉）",
+      "verdict": "最强配对 ρ=-0.13（↔ n_blocked，p=0.0085）**方向与物理预期相反**，且散度 0.094 不小 → 它确实在随几何变，但朝错的方向变",
+      "in_condition_vector": false,
+      "signal": "harmful",
+      "n": 371
+    },
+    {
+      "field": "scattering_ratio",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": true,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.9478885893980232,
+        "median": 1.0,
+        "min": 0.0,
+        "std": 0.15948837651929598,
+        "share_all_rounds_agree": 0.8814016172506739,
+        "share_below_2of3": 0.11859838274932614,
+        "share_zero": 0.01078167115902965,
+        "tolerance_abs": 0.1,
+        "min_within_sample_range_implied": 0.2,
+        "tolerance_note": "±0.10 量程单位（= 量程 0..1 的 10%）"
+      },
+      "grounding": {
+        "tested": 1,
+        "n_testable": 1,
+        "best_driver": "r100",
+        "best_expected_sign": "+",
+        "rho_absmax": 0.08742859022834677,
+        "rho_absmax_signed": 0.08742859022834677,
+        "rho_absmax_shuffled": -0.08802924305054555,
+        "p_permutation": 0.0947263184203949,
+        "any_supported": false,
+        "direction_correct_any": true,
+        "n_pairs_supported": 0
+      },
+      "reproducibility": {
+        "std": 0.0613689340725629,
+        "r2": {
+          "S1": 0.07017401470189133,
+          "S2": 0.04554589648329743,
+          "S3": 0.06203976470103967,
+          "gbm_S3": -0.052327163004049604
+        },
+        "r2_best": 0.07017401470189133,
+        "r2_in_sample_gbm": 0.552893493664808,
+        "r2_shuffled": -0.005466194577699701,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.32367833335514484,
+            "spearman": 0.08742859022834677
+          },
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.31214003232421794,
+            "spearman": 0.03938787931484219
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.26844891420025097,
+            "spearman": -0.275345269624028
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.26806815501931947,
+            "spearman": -0.2694249853714248
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.23280604330626886,
+            "spearman": -0.2039632276394297
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.22806615173892109,
+            "spearman": -0.26725760627160505
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.21225093099478454,
+            "spearman": -0.26502748292157907
+          },
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.2063742166663508,
+            "spearman": -0.31654262731560356
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.19675110293225195,
+            "spearman": -0.24156912324897717
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.18756740476209177,
+            "spearman": -0.2530101965281515
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.18734011175617726,
+            "spearman": -0.21973999910701067
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.12169984289999503,
+            "spearman": 0.2972784975219546
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.033922896526773494,
+            "spearman": 0.12651050319948676
+          }
+        ],
+        "best_driver": "r100",
+        "best_in_sample_r2": 0.32367833335514484,
+        "best_spearman": 0.08742859022834677,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 0.0613689340725629,
+        "range": 1.0,
+        "std_over_range": 0.0613689340725629,
+        "unique": 20,
+        "min": 0.0,
+        "max": 0.45,
+        "mean": 0.1794699011680144
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.048230854002161094,
+            "std_over_range": 0.048230854002161094,
+            "unique": 13,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.20065635255508674
+          },
+          "1": {
+            "n": 80,
+            "std": 0.05753584329693003,
+            "std_over_range": 0.05753584329693003,
+            "unique": 13,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.19685888420065636
+          },
+          "2": {
+            "n": 80,
+            "std": 0.059584425980657434,
+            "std_over_range": 0.059584425980657434,
+            "unique": 13,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.0019221753398968588
+          },
+          "3": {
+            "n": 80,
+            "std": 0.06907121928367367,
+            "std_over_range": 0.06907121928367367,
+            "unique": 14,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.19519456165025786
+          },
+          "4": {
+            "n": 51,
+            "std": 0.07160219465298123,
+            "std_over_range": 0.07160219465298123,
+            "unique": 11,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.03828054298642534
+          }
+        },
+        "sign_agreement_with_expected": "3/5",
+        "std_over_range_min": 0.048230854002161094,
+        "std_over_range_max": 0.07160219465298123,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "幻觉（自信地错）",
+      "verdict": "最强预指定配对 ρ=+0.09（↔ r100，p=0.0947）不成立，但散度 0.061 不小 → 数值在乱跳却不反映给定几何",
+      "in_condition_vector": false,
+      "signal": "harmful",
+      "n": 371
+    },
+    {
+      "field": "permittivity",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": false,
+      "repeatability": {
+        "n": 371,
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "std": 0.0,
+        "share_all_rounds_agree": 1.0,
+        "share_below_2of3": 0.0,
+        "share_zero": 0.0,
+        "tolerance_abs": 1.9000000000000001,
+        "min_within_sample_range_implied": 3.8000000000000003,
+        "tolerance_note": "±1.90 量程单位（= 量程 1..20 的 10%）"
+      },
+      "grounding": {
+        "tested": 0,
+        "any_supported": false
+      },
+      "reproducibility": {
+        "std": 0.5770490735788748,
+        "r2": {
+          "S1": 0.062382561449623286,
+          "S2": 0.04828827076622366,
+          "S3": -0.00015194837948073747,
+          "gbm_S3": 0.1501964650731744
+        },
+        "r2_best": 0.1501964650731744,
+        "r2_in_sample_gbm": 0.526600572508195,
+        "r2_shuffled": -0.01660103666852053,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.31864499364992926,
+            "spearman": -0.19069951614078212
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.27761257454294486,
+            "spearman": -0.13318512843771516
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.2547462510891526,
+            "spearman": -0.1592030775232236
+          },
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.24459540646778943,
+            "spearman": 0.012006946516989123
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.242028889265821,
+            "spearman": -0.16924732749443644
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.24097367448062101,
+            "spearman": -0.010362436168887781
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.23906848136408798,
+            "spearman": -0.18762739785259566
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.22212895020266632,
+            "spearman": -0.19144375224716065
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.22202637015447324,
+            "spearman": -0.18462342875002644
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.21371790422531067,
+            "spearman": -0.20376982495059184
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.20598725496879078,
+            "spearman": -0.1928579653473141
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.099781743013175,
+            "spearman": 0.1410356796236285
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.08842250389725348,
+            "spearman": 0.22043230083400503
+          }
+        ],
+        "best_driver": "min_dist",
+        "best_in_sample_r2": 0.31864499364992926,
+        "best_spearman": -0.19069951614078212,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 0.5770490735788748,
+        "range": 19.0,
+        "std_over_range": 0.03037100387257236,
+        "unique": 21,
+        "min": 4.0,
+        "max": 6.0,
+        "mean": 5.0195867026055705
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.5668571983606924,
+            "std_over_range": 0.029834589387404863,
+            "unique": 18
+          },
+          "1": {
+            "n": 80,
+            "std": 0.6063081300882507,
+            "std_over_range": 0.03191095421517109,
+            "unique": 16
+          },
+          "2": {
+            "n": 80,
+            "std": 0.5481224265111257,
+            "std_over_range": 0.02884854876374346,
+            "unique": 15
+          },
+          "3": {
+            "n": 80,
+            "std": 0.5861811437886187,
+            "std_over_range": 0.030851639146769406,
+            "unique": 14
+          },
+          "4": {
+            "n": 51,
+            "std": 0.5685267734477943,
+            "std_over_range": 0.02992246176041023,
+            "unique": 12
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": 0.02884854876374346,
+        "std_over_range_max": 0.03191095421517109,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "常数（无区分度）",
+      "verdict": "归一化散度 0.030 ≤ 0.05（std÷量程）→ 取值基本恒定，不携带逐样本信息；恒定本身可能是对的（材料/场景属性属常识），但下游不能指望它带信息",
+      "in_condition_vector": false,
+      "signal": "none",
+      "n": 371
+    },
+    {
+      "field": "penetration_loss_db",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": false,
+      "repeatability": {
+        "n": 371,
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "std": 0.0,
+        "share_all_rounds_agree": 1.0,
+        "share_below_2of3": 0.0,
+        "share_zero": 0.0,
+        "tolerance_abs": 6.0,
+        "min_within_sample_range_implied": 12.0,
+        "tolerance_note": "±6.0 量程单位（= 量程 0..60 的 10%）"
+      },
+      "grounding": {
+        "tested": 0,
+        "any_supported": false
+      },
+      "reproducibility": {
+        "std": 0.9920480201317156,
+        "r2": {
+          "S1": -0.009504184242108638,
+          "S2": -0.009660454883879677,
+          "S3": -0.008715778217967651,
+          "gbm_S3": -0.24050521307754713
+        },
+        "r2_best": -0.008715778217967651,
+        "r2_in_sample_gbm": 0.534864464080393,
+        "r2_shuffled": -0.018211104451639315,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.46840668896785487,
+            "spearman": -0.1188392548709043
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.4066549762902725,
+            "spearman": -0.16693542512166978
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.31411653882332313,
+            "spearman": 0.01675929472642802
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.26099898358361895,
+            "spearman": 0.09704326533297927
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.26046673614582283,
+            "spearman": 0.05631214206990227
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.22974888280923922,
+            "spearman": 0.05547672705311171
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.19389501171792545,
+            "spearman": 0.004775612931425469
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.18667286963050178,
+            "spearman": 0.10055788333329417
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.18336853253076524,
+            "spearman": 0.0438784406526342
+          },
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.13390997888322098,
+            "spearman": 0.04303292075659696
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.1196471118261423,
+            "spearman": 0.08134263295553618
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.027624355583684923,
+            "spearman": -0.061254133013110494
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.0003455107670926605,
+            "spearman": 0.06994409416807469
+          }
+        ],
+        "best_driver": "r50",
+        "best_in_sample_r2": 0.46840668896785487,
+        "best_spearman": -0.1188392548709043,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 0.9920480201317156,
+        "range": 60.0,
+        "std_over_range": 0.016534133668861927,
+        "unique": 15,
+        "min": 6.0,
+        "max": 15.0,
+        "mean": 10.034141958670261
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.7147260547463856,
+            "std_over_range": 0.011912100912439761,
+            "unique": 7
+          },
+          "1": {
+            "n": 80,
+            "std": 1.3163237950190423,
+            "std_over_range": 0.021938729916984038,
+            "unique": 11
+          },
+          "2": {
+            "n": 80,
+            "std": 1.0193952455582018,
+            "std_over_range": 0.016989920759303365,
+            "unique": 10
+          },
+          "3": {
+            "n": 80,
+            "std": 0.9149605334536447,
+            "std_over_range": 0.015249342224227412,
+            "unique": 9
+          },
+          "4": {
+            "n": 51,
+            "std": 0.7898497432690612,
+            "std_over_range": 0.013164162387817686,
+            "unique": 8
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": 0.011912100912439761,
+        "std_over_range_max": 0.021938729916984038,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "常数（无区分度）",
+      "verdict": "归一化散度 0.017 ≤ 0.05（std÷量程）→ 取值基本恒定，不携带逐样本信息；恒定本身可能是对的（材料/场景属性属常识），但下游不能指望它带信息",
+      "in_condition_vector": false,
+      "signal": "none",
+      "n": 371
+    },
+    {
+      "field": "pathloss_min_db",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": true,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.9344115004492362,
+        "median": 1.0,
+        "min": 0.6666666666666666,
+        "std": 0.1325178550621288,
+        "share_all_rounds_agree": 0.8032345013477089,
+        "share_below_2of3": 0.1967654986522911,
+        "share_zero": 0.0,
+        "tolerance_abs": 17.0,
+        "min_within_sample_range_implied": 34.0,
+        "tolerance_note": "±17.0 量程单位（= 量程 30..200 的 10%）"
+      },
+      "grounding": {
+        "tested": 0,
+        "any_supported": false
+      },
+      "reproducibility": {
+        "std": 7.577187555547538,
+        "r2": {
+          "S1": -0.006255176464823986,
+          "S2": -0.014094603363384861,
+          "S3": 0.026834803499644955,
+          "gbm_S3": 0.03139528700820571
+        },
+        "r2_best": 0.03139528700820571,
+        "r2_in_sample_gbm": 0.6303936746203629,
+        "r2_shuffled": 0.005811764399378805,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.3835822342158497,
+            "spearman": -0.023267541952873665
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.29370596225883105,
+            "spearman": 0.014420837670989832
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.2782381726852471,
+            "spearman": 0.13173190580372565
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.23981648450478943,
+            "spearman": 0.16458733318136848
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.22689041117922348,
+            "spearman": 0.1935439221501303
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.22244825703370785,
+            "spearman": 0.09780418623997443
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.21313443693519962,
+            "spearman": 0.08879086894911606
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.19105546320707456,
+            "spearman": 0.13921492138168948
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.18982814517763325,
+            "spearman": 0.09964139428533829
+          },
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.16817619943608064,
+            "spearman": 0.12367808204691953
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.1525579165803912,
+            "spearman": 0.09181081786072656
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.045252756612333855,
+            "spearman": -0.15294110735376712
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.018593520911956096,
+            "spearman": -0.07886646754571283
+          }
+        ],
+        "best_driver": "r50",
+        "best_in_sample_r2": 0.3835822342158497,
+        "best_spearman": -0.023267541952873665,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 7.577187555547538,
+        "range": 170.0,
+        "std_over_range": 0.04457169150322081,
+        "unique": 13,
+        "min": 35.0,
+        "max": 70.0,
+        "mean": 43.75561545372866
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 7.056813098779867,
+            "std_over_range": 0.0415106652869404,
+            "unique": 7
+          },
+          "1": {
+            "n": 80,
+            "std": 8.20460469458733,
+            "std_over_range": 0.048262380556396055,
+            "unique": 10
+          },
+          "2": {
+            "n": 80,
+            "std": 6.355225321645873,
+            "std_over_range": 0.03738367836262278,
+            "unique": 8
+          },
+          "3": {
+            "n": 80,
+            "std": 7.042005662451572,
+            "std_over_range": 0.04142356272030337,
+            "unique": 9
+          },
+          "4": {
+            "n": 51,
+            "std": 9.320087266566457,
+            "std_over_range": 0.05482404274450857,
+            "unique": 8
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": 0.03738367836262278,
+        "std_over_range_max": 0.05482404274450857,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "常数（无区分度）",
+      "verdict": "归一化散度 0.045 ≤ 0.05（std÷量程）→ 取值基本恒定，不携带逐样本信息；恒定本身可能是对的（材料/场景属性属常识），但下游不能指望它带信息",
+      "in_condition_vector": false,
+      "signal": "none",
+      "n": 371
+    },
+    {
+      "field": "pathloss_max_db",
+      "kind": "LLM 数值",
+      "physically_geo_conditioned": true,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.7834681042228211,
+        "median": 1.0,
+        "min": 0.0,
+        "std": 0.4000776502023133,
+        "share_all_rounds_agree": 0.7574123989218329,
+        "share_below_2of3": 0.24258760107816713,
+        "share_zero": 0.19946091644204852,
+        "tolerance_abs": 19.0,
+        "min_within_sample_range_implied": 38.0,
+        "tolerance_note": "±19.0 量程单位（= 量程 60..250 的 10%）"
+      },
+      "grounding": {
+        "tested": 2,
+        "n_testable": 2,
+        "best_driver": "n_blocked",
+        "best_expected_sign": "+",
+        "rho_absmax": 0.10945158705353471,
+        "rho_absmax_signed": -0.10945158705353471,
+        "rho_absmax_shuffled": 0.06937046602293102,
+        "p_permutation": 0.04173956510872282,
+        "any_supported": false,
+        "direction_correct_any": false,
+        "n_pairs_supported": 0
+      },
+      "reproducibility": {
+        "std": 17.329127019266476,
+        "r2": {
+          "S1": -0.010177515955670069,
+          "S2": -0.018260428551190477,
+          "S3": 0.01931322169791383,
+          "gbm_S3": 0.058010067858639824
+        },
+        "r2_best": 0.058010067858639824,
+        "r2_in_sample_gbm": 0.644031011987173,
+        "r2_shuffled": -0.024793221177165092,
+        "shuffle_ok": true
+      },
+      "oracle": {
+        "tested": 13,
+        "per_driver": [
+          {
+            "driver": "r50",
+            "in_sample_r2": 0.40517576538408273,
+            "spearman": 0.008252631381054996
+          },
+          {
+            "driver": "r100",
+            "in_sample_r2": 0.3025161269743747,
+            "spearman": 0.01788352129192056
+          },
+          {
+            "driver": "dist_az270",
+            "in_sample_r2": 0.2519602263584454,
+            "spearman": 0.07301456747591867
+          },
+          {
+            "driver": "dist_az0",
+            "in_sample_r2": 0.232046250026411,
+            "spearman": 0.05459102263727948
+          },
+          {
+            "driver": "dist_az45",
+            "in_sample_r2": 0.22355368257989516,
+            "spearman": 0.10286085581277303
+          },
+          {
+            "driver": "dist_az315",
+            "in_sample_r2": 0.21568244826681504,
+            "spearman": 0.034726240021431744
+          },
+          {
+            "driver": "dist_az90",
+            "in_sample_r2": 0.21115210586372035,
+            "spearman": 0.10911507107490065
+          },
+          {
+            "driver": "dist_az180",
+            "in_sample_r2": 0.1806638292160917,
+            "spearman": 0.0789040670963982
+          },
+          {
+            "driver": "dist_az135",
+            "in_sample_r2": 0.1686875219673325,
+            "spearman": 0.1256095239661886
+          },
+          {
+            "driver": "min_dist",
+            "in_sample_r2": 0.15846986033035637,
+            "spearman": 0.07167743345467022
+          },
+          {
+            "driver": "dist_az225",
+            "in_sample_r2": 0.15705638130053345,
+            "spearman": 0.03231986877756811
+          },
+          {
+            "driver": "n_blocked",
+            "in_sample_r2": 0.047559771303332554,
+            "spearman": -0.10945158705353471
+          },
+          {
+            "driver": "tx_on_building",
+            "in_sample_r2": 0.013390333240864583,
+            "spearman": -0.014775918427774789
+          }
+        ],
+        "best_driver": "r50",
+        "best_in_sample_r2": 0.40517576538408273,
+        "best_spearman": 0.008252631381054996,
+        "encoded_by_single_driver": false
+      },
+      "variance": {
+        "std": 17.329127019266476,
+        "range": 190.0,
+        "std_over_range": 0.09120593168034988,
+        "unique": 30,
+        "min": 65.0,
+        "max": 153.33333333333334,
+        "mean": 88.20754716981132
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 16.529382508463865,
+            "std_over_range": 0.08699675004454666,
+            "unique": 11,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.07702766057196436
+          },
+          "1": {
+            "n": 80,
+            "std": 18.287062822297806,
+            "std_over_range": 0.09624769906472529,
+            "unique": 16,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.27442569151429913
+          },
+          "2": {
+            "n": 80,
+            "std": 14.398531464470025,
+            "std_over_range": 0.07578174454984224,
+            "unique": 10,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.04655414908579465
+          },
+          "3": {
+            "n": 80,
+            "std": 16.581959218614,
+            "std_over_range": 0.08727346957165263,
+            "unique": 17,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": 0.23572433192686357
+          },
+          "4": {
+            "n": 51,
+            "std": 21.157903584816818,
+            "std_over_range": 0.11135738728850957,
+            "unique": 13,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.03556561085972851
+          }
+        },
+        "sign_agreement_with_expected": "1/5",
+        "std_over_range_min": 0.07578174454984224,
+        "std_over_range_max": 0.11135738728850957,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "自信地错（系统性幻觉）",
+      "verdict": "最强配对 ρ=-0.11（↔ n_blocked，p=0.0417）**方向与物理预期相反**，且散度 0.091 不小 → 它确实在随几何变，但朝错的方向变",
+      "in_condition_vector": false,
+      "signal": "harmful",
+      "n": 371
+    },
+    {
+      "field": "scene_type",
+      "kind": "LLM 类别",
+      "physically_geo_conditioned": false,
+      "repeatability": {
+        "n": 371,
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "std": 0.0,
+        "share_all_rounds_agree": 1.0,
+        "share_below_2of3": 0.0,
+        "share_zero": 0.0,
+        "tolerance_abs": NaN,
+        "min_within_sample_range_implied": NaN,
+        "tolerance_note": "类别字段：与众数相同的比例"
+      },
+      "grounding": {
+        "tested": 0,
+        "any_supported": false,
+        "rho_absmax_signed": NaN,
+        "p_permutation": NaN
+      },
+      "reproducibility": {},
+      "oracle": {},
+      "variance": {
+        "unique": 1,
+        "top1_share": 1.0,
+        "top1_value": "urban",
+        "entropy_bits": -0.0,
+        "counts": {
+          "urban": 371
+        }
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "1": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "2": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "3": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "4": {
+            "n": 51,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 51
+            }
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": NaN,
+        "std_over_range_max": NaN,
+        "top1_share_min": 1.0,
+        "top1_share_max": 1.0
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "常数（无区分度）",
+      "verdict": "归一化散度 0.000 ≤ 0.05（1−top1占比 (top1=1.00)）→ 取值基本恒定，不携带逐样本信息；恒定本身可能是对的（材料/场景属性属常识），但下游不能指望它带信息",
+      "in_condition_vector": false,
+      "signal": "none",
+      "n": 371
+    },
+    {
+      "field": "dominant_material",
+      "kind": "LLM 类别",
+      "physically_geo_conditioned": false,
+      "repeatability": {
+        "n": 371,
+        "mean": 0.7556154537286613,
+        "median": 0.6666666666666666,
+        "min": 0.6666666666666666,
+        "std": 0.14743713564611693,
+        "share_all_rounds_agree": 0.2668463611859838,
+        "share_below_2of3": 0.7331536388140162,
+        "share_zero": 0.0,
+        "tolerance_abs": NaN,
+        "min_within_sample_range_implied": NaN,
+        "tolerance_note": "类别字段：与众数相同的比例"
+      },
+      "grounding": {
+        "tested": 0,
+        "any_supported": false,
+        "rho_absmax_signed": NaN,
+        "p_permutation": NaN
+      },
+      "reproducibility": {},
+      "oracle": {},
+      "variance": {
+        "unique": 2,
+        "top1_share": 0.5390835579514824,
+        "top1_value": "brick",
+        "entropy_bits": 0.9955879965657266,
+        "counts": {
+          "brick": 200,
+          "concrete": 171
+        }
+      },
+      "within_map": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.525,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 42,
+              "concrete": 38
+            }
+          },
+          "1": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.5125,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 41,
+              "concrete": 39
+            }
+          },
+          "2": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.5125,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 41,
+              "concrete": 39
+            }
+          },
+          "3": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.5625,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 45,
+              "concrete": 35
+            }
+          },
+          "4": {
+            "n": 51,
+            "unique": 2,
+            "top1_share": 0.6078431372549019,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 31,
+              "concrete": 20
+            }
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": NaN,
+        "std_over_range_max": NaN,
+        "top1_share_min": 0.5125,
+        "top1_share_max": 0.6078431372549019
+      },
+      "redundant_confirmed_by_oracle": false,
+      "type": "噪声",
+      "verdict": "多轮一致率中位数 0.67 < 0.7 → 同一输入下取值不稳，下游只能当噪声",
+      "in_condition_vector": false,
+      "signal": "none",
+      "n": 371
+    }
+  ],
+  "type_counts": {
+    "真实且有残余信息": 1,
+    "接地不稳（地图间混淆）": 1,
+    "自信地错（系统性幻觉）": 2,
+    "幻觉（自信地错）": 1,
+    "常数（无区分度）": 4,
+    "噪声": 1
+  },
+  "low_n_warning": null,
+  "fields_with_residual_information": [
+    "los_ratio"
+  ],
+  "fields_harmful": [
+    "diffraction_ratio",
+    "scattering_ratio",
+    "pathloss_max_db"
+  ],
+  "fields_redundant": [],
+  "fields_confounded": [
+    "reflection_ratio"
+  ],
+  "fields_residual_strength": [
+    {
+      "field": "los_ratio",
+      "sign_agreement": "5/5",
+      "r2_cv": 0.4335763927433658,
+      "r2_in_sample_single_driver": 0.7647166917653301,
+      "best_driver": "min_dist",
+      "redundant_confirmed_by_oracle": false
+    }
+  ],
+  "overall_consistency": {
+    "n": 371,
+    "mean": 0.9108715184186884,
+    "median": 0.9333333333333332,
+    "min": 0.6,
+    "max": 1.0,
+    "std": 0.07593948640140474,
+    "derived_confidence_counts": {
+      "high": 214,
+      "medium": 155,
+      "low": 2
+    },
+    "llm_reported_confidence_mode_counts": {
+      "medium": 370,
+      "high": 1
+    }
+  },
+  "grounding_pairs": [
+    {
+      "field": "los_ratio",
+      "driver": "min_dist",
+      "expected_sign": "+",
+      "rho": 0.7283902457365634,
+      "rho_shuffled": 0.011377859034584537,
+      "delta": 0.7170123867019789,
+      "direction_correct": true,
+      "p_permutation": 0.00024993751562109475,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": true
+    },
+    {
+      "field": "los_ratio",
+      "driver": "n_blocked",
+      "expected_sign": "-",
+      "rho": -0.7131076733633033,
+      "rho_shuffled": -0.022116760704709578,
+      "delta": -0.6909909126585937,
+      "direction_correct": true,
+      "p_permutation": 0.00024993751562109475,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": true
+    },
+    {
+      "field": "los_ratio",
+      "driver": "r100",
+      "expected_sign": "-",
+      "rho": -0.18067524093087087,
+      "rho_shuffled": 0.01782782695746786,
+      "delta": -0.1985030678883387,
+      "direction_correct": true,
+      "p_permutation": 0.0012496875781054736,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": true
+    },
+    {
+      "field": "reflection_ratio",
+      "driver": "r100",
+      "expected_sign": "+",
+      "rho": -0.01280264700836825,
+      "rho_shuffled": 0.09377186942616035,
+      "delta": -0.1065745164345286,
+      "direction_correct": false,
+      "p_permutation": 0.8012996750812297,
+      "significant_p05": false,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": false
+    },
+    {
+      "field": "reflection_ratio",
+      "driver": "min_dist",
+      "expected_sign": "-",
+      "rho": -0.219618035564475,
+      "rho_shuffled": 0.12416687620582934,
+      "delta": -0.34378491177030435,
+      "direction_correct": true,
+      "p_permutation": 0.00024993751562109475,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": true
+    },
+    {
+      "field": "diffraction_ratio",
+      "driver": "n_blocked",
+      "expected_sign": "+",
+      "rho": -0.1342379158569055,
+      "rho_shuffled": 0.0544678841087849,
+      "delta": -0.1887057999656904,
+      "direction_correct": false,
+      "p_permutation": 0.00849787553111722,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": false
+    },
+    {
+      "field": "diffraction_ratio",
+      "driver": "min_dist",
+      "expected_sign": "-",
+      "rho": 0.11280546697466966,
+      "rho_shuffled": -0.08686036701861413,
+      "delta": 0.1996658339932838,
+      "direction_correct": false,
+      "p_permutation": 0.02799300174956261,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": false
+    },
+    {
+      "field": "scattering_ratio",
+      "driver": "r100",
+      "expected_sign": "+",
+      "rho": 0.08742859022834677,
+      "rho_shuffled": -0.08802924305054555,
+      "delta": 0.1754578332788923,
+      "direction_correct": true,
+      "p_permutation": 0.0947263184203949,
+      "significant_p05": false,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": false
+    },
+    {
+      "field": "pathloss_max_db",
+      "driver": "n_blocked",
+      "expected_sign": "+",
+      "rho": -0.10945158705353471,
+      "rho_shuffled": 0.06937046602293102,
+      "delta": -0.17882205307646573,
+      "direction_correct": false,
+      "p_permutation": 0.04173956510872282,
+      "significant_p05": true,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": false
+    },
+    {
+      "field": "pathloss_max_db",
+      "driver": "min_dist",
+      "expected_sign": "-",
+      "rho": 0.07167743345467022,
+      "rho_shuffled": -0.0851571073725669,
+      "delta": 0.15683454082723713,
+      "direction_correct": false,
+      "p_permutation": 0.17920519870032492,
+      "significant_p05": false,
+      "testable": true,
+      "not_testable_reason": "",
+      "supported": false
+    }
+  ],
+  "grounding_summary": {
+    "n": 371,
+    "spearman_se": 0.05198752449100364,
+    "tested_pairs": 10,
+    "testable_pairs": 10,
+    "direction_correct": 5,
+    "supported": 4,
+    "shuffle_seed": 20260101,
+    "n_permutation": 4000
+  },
+  "distillability_summary": {
+    "n": 371,
+    "n_features": 45,
+    "feature_sets": {
+      "S1": "5 个标量",
+      "S2": "S1 + 8 方位最近距离",
+      "S3": "S2 + 8 方位遮挡 one-hot",
+      "gbm_S3": "S3 + GBM（非线性上限）"
+    }
+  },
+  "oracle_summary": {
+    "n": 371,
+    "threshold_in_sample_r2": 0.85,
+    "note": "in_sample_r2 是**样本内**（非泛化）指标，容量极低的小树；它只回答「这条关系有多强」，越高越说明该字段是那个几何量的重新编码。"
+  },
+  "fields_redundant_confirmed_by_oracle": [],
+  "within_map": {
+    "maps": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "per_field": {
+      "los_ratio": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.0931545907498808,
+            "std_over_range": 0.0931545907498808,
+            "unique": 8,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.743905297702766
+          },
+          "1": {
+            "n": 80,
+            "std": 0.03756418118811235,
+            "std_over_range": 0.03756418118811235,
+            "unique": 7,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.6106422878574778
+          },
+          "2": {
+            "n": 80,
+            "std": 0.06473101394746314,
+            "std_over_range": 0.06473101394746314,
+            "unique": 9,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.7951945616502578
+          },
+          "3": {
+            "n": 80,
+            "std": 0.0854194613363957,
+            "std_over_range": 0.0854194613363957,
+            "unique": 9,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.7539849976558838
+          },
+          "4": {
+            "n": 51,
+            "std": 0.036149168128169505,
+            "std_over_range": 0.036149168128169505,
+            "unique": 6,
+            "driver": "min_dist",
+            "expected_sign": "+",
+            "rho": 0.6028054298642533
+          }
+        },
+        "sign_agreement_with_expected": "5/5",
+        "std_over_range_min": 0.036149168128169505,
+        "std_over_range_max": 0.0931545907498808,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "reflection_ratio": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.1020023062783931,
+            "std_over_range": 0.1020023062783931,
+            "unique": 18,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.16812001875293014
+          },
+          "1": {
+            "n": 80,
+            "std": 0.10249576549518738,
+            "std_over_range": 0.10249576549518738,
+            "unique": 17,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.22583216127519926
+          },
+          "2": {
+            "n": 80,
+            "std": 0.09849540845192284,
+            "std_over_range": 0.09849540845192284,
+            "unique": 20,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.18837318330989217
+          },
+          "3": {
+            "n": 80,
+            "std": 0.10122170386499792,
+            "std_over_range": 0.10122170386499792,
+            "unique": 18,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.1342006563525551
+          },
+          "4": {
+            "n": 51,
+            "std": 0.08943627115137635,
+            "std_over_range": 0.08943627115137635,
+            "unique": 16,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.12063348416289593
+          }
+        },
+        "sign_agreement_with_expected": "2/5",
+        "std_over_range_min": 0.08943627115137635,
+        "std_over_range_max": 0.10249576549518738,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "diffraction_ratio": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.0942143592352626,
+            "std_over_range": 0.0942143592352626,
+            "unique": 16,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.32623066104078763
+          },
+          "1": {
+            "n": 80,
+            "std": 0.08984554647962369,
+            "std_over_range": 0.08984554647962369,
+            "unique": 19,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.37203469292076885
+          },
+          "2": {
+            "n": 80,
+            "std": 0.09579709459755724,
+            "std_over_range": 0.09579709459755724,
+            "unique": 20,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.1720112517580872
+          },
+          "3": {
+            "n": 80,
+            "std": 0.10649705753629482,
+            "std_over_range": 0.10649705753629482,
+            "unique": 22,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": 0.20140646976090015
+          },
+          "4": {
+            "n": 51,
+            "std": 0.06957024361168718,
+            "std_over_range": 0.06957024361168718,
+            "unique": 12,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": 0.046153846153846156
+          }
+        },
+        "sign_agreement_with_expected": "2/5",
+        "std_over_range_min": 0.06957024361168718,
+        "std_over_range_max": 0.10649705753629482,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "scattering_ratio": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.048230854002161094,
+            "std_over_range": 0.048230854002161094,
+            "unique": 13,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.20065635255508674
+          },
+          "1": {
+            "n": 80,
+            "std": 0.05753584329693003,
+            "std_over_range": 0.05753584329693003,
+            "unique": 13,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.19685888420065636
+          },
+          "2": {
+            "n": 80,
+            "std": 0.059584425980657434,
+            "std_over_range": 0.059584425980657434,
+            "unique": 13,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.0019221753398968588
+          },
+          "3": {
+            "n": 80,
+            "std": 0.06907121928367367,
+            "std_over_range": 0.06907121928367367,
+            "unique": 14,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": 0.19519456165025786
+          },
+          "4": {
+            "n": 51,
+            "std": 0.07160219465298123,
+            "std_over_range": 0.07160219465298123,
+            "unique": 11,
+            "driver": "r100",
+            "expected_sign": "+",
+            "rho": -0.03828054298642534
+          }
+        },
+        "sign_agreement_with_expected": "3/5",
+        "std_over_range_min": 0.048230854002161094,
+        "std_over_range_max": 0.07160219465298123,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "permittivity": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.5668571983606924,
+            "std_over_range": 0.029834589387404863,
+            "unique": 18
+          },
+          "1": {
+            "n": 80,
+            "std": 0.6063081300882507,
+            "std_over_range": 0.03191095421517109,
+            "unique": 16
+          },
+          "2": {
+            "n": 80,
+            "std": 0.5481224265111257,
+            "std_over_range": 0.02884854876374346,
+            "unique": 15
+          },
+          "3": {
+            "n": 80,
+            "std": 0.5861811437886187,
+            "std_over_range": 0.030851639146769406,
+            "unique": 14
+          },
+          "4": {
+            "n": 51,
+            "std": 0.5685267734477943,
+            "std_over_range": 0.02992246176041023,
+            "unique": 12
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": 0.02884854876374346,
+        "std_over_range_max": 0.03191095421517109,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "penetration_loss_db": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 0.7147260547463856,
+            "std_over_range": 0.011912100912439761,
+            "unique": 7
+          },
+          "1": {
+            "n": 80,
+            "std": 1.3163237950190423,
+            "std_over_range": 0.021938729916984038,
+            "unique": 11
+          },
+          "2": {
+            "n": 80,
+            "std": 1.0193952455582018,
+            "std_over_range": 0.016989920759303365,
+            "unique": 10
+          },
+          "3": {
+            "n": 80,
+            "std": 0.9149605334536447,
+            "std_over_range": 0.015249342224227412,
+            "unique": 9
+          },
+          "4": {
+            "n": 51,
+            "std": 0.7898497432690612,
+            "std_over_range": 0.013164162387817686,
+            "unique": 8
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": 0.011912100912439761,
+        "std_over_range_max": 0.021938729916984038,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "pathloss_min_db": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 7.056813098779867,
+            "std_over_range": 0.0415106652869404,
+            "unique": 7
+          },
+          "1": {
+            "n": 80,
+            "std": 8.20460469458733,
+            "std_over_range": 0.048262380556396055,
+            "unique": 10
+          },
+          "2": {
+            "n": 80,
+            "std": 6.355225321645873,
+            "std_over_range": 0.03738367836262278,
+            "unique": 8
+          },
+          "3": {
+            "n": 80,
+            "std": 7.042005662451572,
+            "std_over_range": 0.04142356272030337,
+            "unique": 9
+          },
+          "4": {
+            "n": 51,
+            "std": 9.320087266566457,
+            "std_over_range": 0.05482404274450857,
+            "unique": 8
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": 0.03738367836262278,
+        "std_over_range_max": 0.05482404274450857,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "pathloss_max_db": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "std": 16.529382508463865,
+            "std_over_range": 0.08699675004454666,
+            "unique": 11,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.07702766057196436
+          },
+          "1": {
+            "n": 80,
+            "std": 18.287062822297806,
+            "std_over_range": 0.09624769906472529,
+            "unique": 16,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.27442569151429913
+          },
+          "2": {
+            "n": 80,
+            "std": 14.398531464470025,
+            "std_over_range": 0.07578174454984224,
+            "unique": 10,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.04655414908579465
+          },
+          "3": {
+            "n": 80,
+            "std": 16.581959218614,
+            "std_over_range": 0.08727346957165263,
+            "unique": 17,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": 0.23572433192686357
+          },
+          "4": {
+            "n": 51,
+            "std": 21.157903584816818,
+            "std_over_range": 0.11135738728850957,
+            "unique": 13,
+            "driver": "n_blocked",
+            "expected_sign": "+",
+            "rho": -0.03556561085972851
+          }
+        },
+        "sign_agreement_with_expected": "1/5",
+        "std_over_range_min": 0.07578174454984224,
+        "std_over_range_max": 0.11135738728850957,
+        "top1_share_min": NaN,
+        "top1_share_max": NaN
+      },
+      "scene_type": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "1": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "2": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "3": {
+            "n": 80,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 80
+            }
+          },
+          "4": {
+            "n": 51,
+            "unique": 1,
+            "top1_share": 1.0,
+            "top1_value": "urban",
+            "counts": {
+              "urban": 51
+            }
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": NaN,
+        "std_over_range_max": NaN,
+        "top1_share_min": 1.0,
+        "top1_share_max": 1.0
+      },
+      "dominant_material": {
+        "per_map": {
+          "0": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.525,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 42,
+              "concrete": 38
+            }
+          },
+          "1": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.5125,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 41,
+              "concrete": 39
+            }
+          },
+          "2": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.5125,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 41,
+              "concrete": 39
+            }
+          },
+          "3": {
+            "n": 80,
+            "unique": 2,
+            "top1_share": 0.5625,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 45,
+              "concrete": 35
+            }
+          },
+          "4": {
+            "n": 51,
+            "unique": 2,
+            "top1_share": 0.6078431372549019,
+            "top1_value": "brick",
+            "counts": {
+              "brick": 31,
+              "concrete": 20
+            }
+          }
+        },
+        "sign_agreement_with_expected": "无预指定配对",
+        "std_over_range_min": NaN,
+        "std_over_range_max": NaN,
+        "top1_share_min": 0.5125,
+        "top1_share_max": 0.6078431372549019
+      }
+    }
+  },
+  "program_computed_fields": {
+    "note": "v3 里 sectors(40 维) 与 tx_local_building_ratio_*(2 维) 由程序精确测量（provenance.field_sources=program），不在本表的 LLM 类型学里；它们的一致性是结构性的 1.0",
+    "fields": [
+      "sectors",
+      "tx_local_building_ratio_50m",
+      "tx_local_building_ratio_100m"
+    ]
+  },
+  "prior_dim_all_groups": 64,
+  "priors_dir": "C:\\Users\\Administrator\\Desktop\\new LLM\\llm-prior-radiomap\\priors\\prompt_v3\\glm-4v-flash"
+}

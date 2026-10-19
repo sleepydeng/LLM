@@ -1,0 +1,17 @@
+# 训练与数据
+torch>=2.1
+numpy>=1.24
+scipy>=1.10            # 配对 Wilcoxon / 配对 t 检验
+pillow>=10
+pyyaml>=6
+pydantic>=2
+openai>=1.30           # 兼容智谱 / 通义 / DeepSeek 的 OpenAI 协议
+
+# 评测与报告
+matplotlib>=3.7        # 训练曲线与预测三联图（延迟导入，缺了也能跑报告）
+
+# 可选
+pandas>=2.0
+tqdm>=4.60
+psutil>=5.9            # 跨平台进程监控（替掉旧脚本里的 pgrep）
+tensorboard>=2.13

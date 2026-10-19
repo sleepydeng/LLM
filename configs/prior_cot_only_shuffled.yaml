@@ -1,0 +1,13 @@
+# 消融：只用 CoT 文本 + CoT 文本打乱。
+# 与 prior_real_cot_only 结构逐位相同，用来给出"只用 CoT"情形下的容量基线。
+_base_: base.yaml
+
+model:
+  name: unet_film
+  cot:
+    enabled: true
+    mode: cot_only
+prior:
+  mode: real
+  shuffle_cot: true
+  shuffle_seed: 12345

@@ -1,0 +1,8 @@
+# 消融阶梯 1/4：纯场景图，无先验、无 FiLM 分支。
+# 回答："不用任何先验能做到什么" —— 这是所有结论的参照点。
+_base_: base.yaml
+
+model:
+  name: unet                       # 没有条件分支
+prior:
+  mode: none

@@ -1,0 +1,18 @@
+# 阳性对照：oracle 先验（EM 维度灌入真值 pathloss 统计量）。
+#
+# 与 prior_real_v3 唯一差别是 prior.dir 指向 priors/oracle/（EM 字段是程序从真值
+# pathloss 图算出来的，不是 LLM 产出）。用它回答：
+#   * oracle 明显好于 masked_em → 那 22 个 EM 维度 + 判据**能**携带/测出真信号，
+#     说明"real_v3 ≈ masked_em"是 LLM 输出无信息，而不是通路坏了（负面结果成立）。
+#   * oracle 也 ≈ masked_em → 通路/判据有问题，回头查，别发表负面结果。
+#
+# 参数量与 prior_real_v3 / prior_v3_masked_em 逐位相同（都是 64 维、6,608,161）。
+_base_: base.yaml
+
+model:
+  name: unet_film
+
+prior:
+  mode: real
+  dir: priors/oracle
+  prior_groups: [em_num, local_ratio, global_cat, sectors]

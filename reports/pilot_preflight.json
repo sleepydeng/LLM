@@ -1,0 +1,37 @@
+{
+  "maps": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "n_tx": 320,
+  "n_sectors": 2560,
+  "label_distribution": {
+    "blocked": 1519,
+    "sparse": 512,
+    "dense": 512,
+    "open": 17
+  },
+  "majority_global": {
+    "label": "blocked",
+    "accuracy": 0.593359375
+  },
+  "majority_per_azimuth": {
+    "0": "blocked",
+    "45": "blocked",
+    "90": "blocked",
+    "135": "blocked",
+    "180": "blocked",
+    "225": "blocked",
+    "270": "blocked",
+    "315": "blocked"
+  },
+  "accuracy_majority_per_azimuth": 0.593359375,
+  "gate": 0.7,
+  "sector_profile_unique_ratio": 0.515625,
+  "n_all_open_tx": 0,
+  "verdict": [
+    "[可行] 不看图的上限 0.593 < 门槛 0.7，要通过必须真的按 Tx 逐方位读图 —— 门槛有区分度。"
+  ]
+}

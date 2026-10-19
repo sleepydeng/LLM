@@ -1,0 +1,67 @@
+# 基础配置：所有实验 yaml 都用 `_base_: base.yaml` 继承它，只写自己改动的部分。
+# 约定：一次实验 = 一个 runs/<exp_id>/，里面有 config.yaml / train.log / ckpt/ / metrics_test.json。
+runs_dir: runs
+
+data:
+  root: data/radiomapseer          # RadioMapSeer 根目录（1 px = 1 m）
+  splits: data/splits.json         # leave-maps-out 划分，冻结后不许改
+  freq_ghz: 0.9                    # 数据集是 900 MHz
+  px_per_m: 1.0                    # antenna/*.json 就是像素坐标，故 1 px = 1 m
+  tx_encoding: constant            # constant=上一版做法（便于与 5.11 dB 旧 baseline 对比）
+  num_workers: 8
+
+model:
+  name: unet_film                  # unet | unet_film
+  base_channels: 32
+  dropout: 0.15
+  out_clamp: null                  # 显式声明是否 clamp 输出；null = 不 clamp（与上一版一致）
+  film:
+    hidden: [128, 256]             # FiLM MLP 隐层，与上一版的 22->128->256->960 同规模
+    identity_init: true            # γ=1、β=0；关掉它正是上一版前期劣化的原因
+  cot:
+    enabled: false                 # CoT 文本是否进模型（H3）
+    mode: both                     # none | cot_only | both
+    out_dim: 32
+    # 编码器容量刻意与 FiLM 分支同量级（约 27 万参数，FiLM 分支是 28.8 万）。
+    # 初版用 buckets=8192/hidden=256 会多出 217 万参数（+33%），
+    # 那样 prior_real_cot − prior_real 就分不清"CoT 内容有用"和"多了容量"——
+    # 正是本项目一路在批判的错误。容量问题由 prior_real_cot_shuffled 对照进一步吸收。
+    buckets: 2048
+    hidden: 128
+    max_tokens: 512
+
+prior:
+  mode: real                       # none | masked | real | shuffled
+  dir: priors/prompt_v3/glm-4v-flash
+  # 细粒度分组（与旧的 [global_num, global_cat, sectors] 产生**同一顺序的同一向量**，
+  # 因为 em_num+local_ratio 的字段顺序就是原 global_num 的顺序）。
+  # 拆细是为了表达路线 A 的关键对照：几何（程序精确）与电磁（LLM）可以分别处理。
+  prior_groups: [em_num, local_ratio, global_cat, sectors]
+  sectors_channels: false          # true = 额外把 8 方位遮挡铺成 8 个楔形通道拼进输入
+  shuffle_seed: 12345              # shuffled / shuffle_cot 的错位排列种子
+  shuffle_cot: false               # true = 只把 CoT 文本在样本间打乱（H3 的容量对照）
+  zero_groups: []                  # 把指定分组的维度置零，用于**容量对齐**的对照
+
+train:
+  epochs: 50
+  batch_size: 16
+  lr: 3.0e-4
+  weight_decay: 1.0e-4
+  warmup_epochs: 10
+  ema: true
+  ema_decay: 0.999
+  patience: 25
+  amp: false                       # 混合精度（仅 CUDA 生效）
+                                   # ⚠️ 必须保持 false：AMP 下 SSIM 损失（多次卷积+除法）
+                                   # 的梯度会变成 NaN/Inf，GradScaler 直接跳过所有更新，
+                                   # 模型永远停在随机初始化（实测 val RMSE 钉在 212.9 dB、
+                                   # 关掉 AMP 后 3 epoch 就降到 11.8 dB）。见 AGENTS.md。
+  grad_clip: 1.0
+  loss:
+    smooth_l1: 1.0
+    grad: 0.5
+    ssim: 0.3
+    exclude_saturated: false       # true = 训练时排除被噪声地板钉住的像素
+
+eval:
+  weights: ema                     # ema | raw —— 必须显式，禁止"哪个能载入就用哪个"

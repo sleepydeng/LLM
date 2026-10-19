@@ -1,0 +1,393 @@
+{
+  "n_files": 4000,
+  "n_unique_vector": 55,
+  "unique_ratio": 0.01375,
+  "per_key": {
+    "scene_type": {
+      "unique": 2,
+      "top1_value": "dense_urban",
+      "top1_share": 0.52,
+      "entropy_bits": 0.9988455359952018
+    },
+    "dominant_material": {
+      "unique": 2,
+      "top1_value": "concrete",
+      "top1_share": 0.5205,
+      "entropy_bits": 0.9987870748635468
+    },
+    "confidence": {
+      "unique": 3,
+      "top1_value": "medium",
+      "top1_share": 0.979,
+      "entropy_bits": 0.15481491408117407
+    },
+    "los_ratio": {
+      "unique": 7,
+      "top1_value": "0.45",
+      "top1_share": 0.4795,
+      "entropy_bits": 1.703053094888309
+    },
+    "reflection_ratio": {
+      "unique": 5,
+      "top1_value": "0.35",
+      "top1_share": 0.4795,
+      "entropy_bits": 1.3748216071336026
+    },
+    "diffraction_ratio": {
+      "unique": 6,
+      "top1_value": "0.15",
+      "top1_share": 0.4795,
+      "entropy_bits": 1.8297765061635616
+    },
+    "scattering_ratio": {
+      "unique": 6,
+      "top1_value": "0.05",
+      "top1_share": 0.54725,
+      "entropy_bits": 1.5937209583896284
+    },
+    "permittivity": {
+      "unique": 5,
+      "top1_value": "6.0",
+      "top1_share": 0.50325,
+      "entropy_bits": 1.785799266943452
+    },
+    "penetration_loss_db": {
+      "unique": 7,
+      "top1_value": "10.0",
+      "top1_share": 0.86725,
+      "entropy_bits": 0.6500992515485666
+    },
+    "pathloss_min_db": {
+      "unique": 3,
+      "top1_value": "60.0",
+      "top1_share": 0.85325,
+      "entropy_bits": 0.7048333575811929
+    },
+    "pathloss_max_db": {
+      "unique": 7,
+      "top1_value": "120.0",
+      "top1_share": 0.48425,
+      "entropy_bits": 1.5595282996513402
+    }
+  },
+  "missing_keys": {
+    "tx_local_building_ratio_50m": 4000,
+    "tx_local_building_ratio_100m": 4000
+  },
+  "intra_map_unique_ratio_mean": 0.10425000000000001,
+  "n_maps": 50,
+  "samples_per_map_mean": 80.0,
+  "numeric": {
+    "keys": [
+      "los_ratio",
+      "reflection_ratio",
+      "diffraction_ratio",
+      "scattering_ratio",
+      "pathloss_min_db",
+      "pathloss_max_db"
+    ],
+    "unique_min": 3,
+    "entropy_min": 0.7048333575811929,
+    "failing_unique": [
+      "pathloss_min_db"
+    ],
+    "failing_entropy": [
+      "pathloss_min_db"
+    ]
+  },
+  "material_numeric": {
+    "keys": [
+      "permittivity",
+      "penetration_loss_db"
+    ],
+    "unique_min": 5,
+    "note": "材料属性（介电常数 / 穿透损耗）在单一材质数据集上本就应近乎恒定，因此不参加硬门槛；报告出来只为让读者判断物理是否合理。",
+    "values": {
+      "permittivity": {
+        "unique": 5,
+        "top1_value": "6.0",
+        "top1_share": 0.50325
+      },
+      "penetration_loss_db": {
+        "unique": 7,
+        "top1_value": "10.0",
+        "top1_share": 0.86725
+      }
+    }
+  },
+  "categorical": {
+    "keys": [
+      "scene_type",
+      "dominant_material",
+      "confidence"
+    ],
+    "unique_min": 2,
+    "constant_keys": []
+  },
+  "within_map_variation": {
+    "scene_type": {
+      "maps_with_variation": 0,
+      "maps_considered": 50,
+      "share": 0.0
+    },
+    "dominant_material": {
+      "maps_with_variation": 2,
+      "maps_considered": 50,
+      "share": 0.04
+    },
+    "confidence": {
+      "maps_with_variation": 31,
+      "maps_considered": 50,
+      "share": 0.62
+    },
+    "los_ratio": {
+      "maps_with_variation": 28,
+      "maps_considered": 50,
+      "share": 0.56
+    },
+    "reflection_ratio": {
+      "maps_with_variation": 28,
+      "maps_considered": 50,
+      "share": 0.56
+    },
+    "diffraction_ratio": {
+      "maps_with_variation": 28,
+      "maps_considered": 50,
+      "share": 0.56
+    },
+    "scattering_ratio": {
+      "maps_with_variation": 28,
+      "maps_considered": 50,
+      "share": 0.56
+    },
+    "permittivity": {
+      "maps_with_variation": 50,
+      "maps_considered": 50,
+      "share": 1.0
+    },
+    "penetration_loss_db": {
+      "maps_with_variation": 43,
+      "maps_considered": 50,
+      "share": 0.86
+    },
+    "pathloss_min_db": {
+      "maps_with_variation": 28,
+      "maps_considered": 50,
+      "share": 0.56
+    },
+    "pathloss_max_db": {
+      "maps_with_variation": 28,
+      "maps_considered": 50,
+      "share": 0.56
+    },
+    "tx_local_building_ratio_50m": {
+      "maps_with_variation": 0,
+      "maps_considered": 0,
+      "share": 0.0
+    },
+    "tx_local_building_ratio_100m": {
+      "maps_with_variation": 0,
+      "maps_considered": 0,
+      "share": 0.0
+    }
+  },
+  "fields_varying_within_map": 9,
+  "sectors": {
+    "n_with_sectors": 0,
+    "unique_profiles": 0,
+    "sector_profile_unique_ratio": 0.0,
+    "top1_profile_share": 0.0,
+    "top1_profile": null
+  },
+  "reasoning": {
+    "n": 4000,
+    "unique": 2835,
+    "unique_ratio": 0.70875,
+    "top1_share": 0.11875,
+    "top1_head": "1. 场景分类：建筑高度20-40m，街道窄(12-15m)，建筑密度极高，判定为dense_urban。\n2. LOS估计：28GHz在密集城区中，Tx高度25m低于多数建筑(20-40m)，LOS路径受限严重，估计约25%。\n3. 传播机制：28GHz毫米波反射较强(光滑墙面)，衍射角度小但有贡献，散射来自粗糙表面和不规则物体。\n4. 材质：欧洲城市建筑以混凝土和砖为主，介电常数约7-8，穿透",
+    "mean_len": 297.365
+  },
+  "content_contamination": {
+    "n": 4000,
+    "n_hit": 3266,
+    "share": 0.8165,
+    "examples": [
+      "1. 场景分类：建筑高度10-30m，密度中等，判定为urban。\n2. LOS估计：Tx高度0m，LOS受限于建筑高度和街道宽度，约45%。\n3. 传播机制：0.9GHz低频，衍射能力强，反射来自建筑外墙，散射来自不规则表面。\n4. 材质：建筑多为混凝土和砖混结构，介电常数约4-6，穿透损耗@0.9GHz约8-12d",
+      "1. 场景分类：图中建筑高度不一，但大部分在10-30m之间，属于中等密度的城区，因此 scene_type 为 'urban'。\n2. LOS估计：发射机位于建筑底部，LOS受限于较高的建筑，大约45%的区域可以直视。\n3. 传播机制：0.9GHz频段下，反射和衍射为主要传播方式，散射影响较小。\n4. 材质判断：从图",
+      "1. 场景分类：建筑高度10-30m，中等密度，判定为urban。\n2. LOS估计：Tx在地面上，LOS受限于建筑物的阻挡，约45%。\n3. 传播机制：0.9GHz低频，衍射能力强，反射和散射也较明显。\n4. 材质：城市建筑多为混凝土和砖混结构，介电常数约4-6，穿透损耗@0.9GHz约8-12dB。\n5. Path"
+    ],
+    "by_group": {
+      "mmwave": {
+        "n_hit": 475,
+        "share": 0.11875,
+        "patterns": [
+          "28\\s*ghz",
+          "毫米波",
+          "mmwave",
+          "millimeter",
+          "mm\\s*wave"
+        ],
+        "example": "1. 场景分类：建筑高度20-40m，街道窄(12-15m)，建筑密度极高，判定为dense_urban。\n2. LOS估计：28GHz在密集城区中，Tx高度25m低于多数建筑(20-40m)，LOS路径受限严重，估计约25%。\n3. 传播机制：28GHz毫米波反射较强(光滑墙面)，衍射角度小但有贡献，散射来自粗糙表面"
+      },
+      "height": {
+        "n_hit": 3266,
+        "share": 0.8165,
+        "patterns": [
+          "建筑高度",
+          "楼高",
+          "楼层",
+          "building height",
+          "taller",
+          "天线高度",
+          "tx height",
+          "发射机高度"
+        ],
+        "example": "1. 场景分类：建筑高度10-30m，密度中等，判定为urban。\n2. LOS估计：Tx高度0m，LOS受限于建筑高度和街道宽度，约45%。\n3. 传播机制：0.9GHz低频，衍射能力强，反射来自建筑外墙，散射来自不规则表面。\n4. 材质：建筑多为混凝土和砖混结构，介电常数约4-6，穿透损耗@0.9GHz约8-12d"
+      }
+    }
+  },
+  "field_consistency_mean": null,
+  "n_with_provenance": 0,
+  "n_parse_failed": 0,
+  "parse_failed": [],
+  "formats": {
+    "flat": 4000
+  },
+  "gate": {
+    "pass": false,
+    "hard_failures": 4,
+    "warnings": 8,
+    "results": [
+      {
+        "gate": "unique_ratio",
+        "value": 0.0138,
+        "threshold": 0.5,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "唯一字段向量 / 样本数；上一版是 0.0138（55 / 4000）"
+      },
+      {
+        "gate": "intra_map_unique_ratio_mean",
+        "value": 0.1043,
+        "threshold": 0.5,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "同一张地图内不同 Tx 的唯一向量占比；上一版是 0.104"
+      },
+      {
+        "gate": "numeric_unique_min",
+        "value": 3.0,
+        "threshold": 5,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "恒定或量化的几何条件字段：pathloss_min_db"
+      },
+      {
+        "gate": "numeric_entropy_min",
+        "value": 0.7048,
+        "threshold": 1.0,
+        "op": ">=",
+        "severity": "fail",
+        "pass": false,
+        "note": "熵过低的几何条件字段：pathloss_min_db"
+      },
+      {
+        "gate": "categorical_min_unique",
+        "value": 2.0,
+        "threshold": 2.0,
+        "op": ">=",
+        "severity": "fail",
+        "pass": true,
+        "note": "没有任何类别字段退化成常量"
+      },
+      {
+        "gate": "max_top1_share[confidence]",
+        "value": 0.979,
+        "threshold": 0.4,
+        "op": "<",
+        "severity": "warn",
+        "pass": false,
+        "note": "仅提示：类别字段的取值不均衡可能只是数据本身的性质，不阻断训练"
+      },
+      {
+        "gate": "confidence_top1_share",
+        "value": 0.979,
+        "threshold": 0.9,
+        "op": "<",
+        "severity": "warn",
+        "pass": false,
+        "note": "自报置信度几乎恒定是上一版的病症之一（97.9% 都是 medium）"
+      },
+      {
+        "gate": "fields_varying_within_map",
+        "value": 9.0,
+        "threshold": 3,
+        "op": ">=",
+        "severity": "warn",
+        "pass": true,
+        "note": "注意：上一版此指标是 9/13（通过）却依然完全坍缩 —— 它不足以判定健康，仅供参考"
+      },
+      {
+        "gate": "scene_type_classes",
+        "value": 2.0,
+        "threshold": 3,
+        "op": ">=",
+        "severity": "warn",
+        "pass": false,
+        "note": "若数据集本身只有两类，这一条不达标属正常"
+      },
+      {
+        "gate": "sector_profile_unique_ratio",
+        "value": 0.0,
+        "threshold": 0.5,
+        "op": ">=",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "reasoning_repeat_share",
+        "value": 0.1187,
+        "threshold": 0.1,
+        "op": "<",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "content_contamination_share",
+        "value": 0.8165,
+        "threshold": 0.05,
+        "op": "<",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "mmwave_hallucination_share",
+        "value": 0.1187,
+        "threshold": 0.02,
+        "op": "<",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "height_hallucination_share",
+        "value": 0.8165,
+        "threshold": 0.05,
+        "op": "<",
+        "severity": "warn",
+        "pass": false
+      },
+      {
+        "gate": "field_consistency_mean",
+        "value": null,
+        "threshold": 0.8,
+        "op": ">=",
+        "severity": "warn",
+        "pass": null,
+        "note": "数据不足，未判定"
+      }
+    ]
+  }
+}

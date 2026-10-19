@@ -1,0 +1,19 @@
+# 消融：CoT 文本真正进模型（H3）。
+# 与 prior_real 的唯一差别是 CoT 编码器开启，结构化字段与 CoT 嵌入拼接后共同产生 FiLM 参数。
+#
+# 这一档存在的原因：上一版项目叫 CoT-RadioMap，但 `reasoning` 在全项目零引用，
+# CoT 对模型完全不可观测，所以"CoT 有用"从未被检验过。
+#
+# 重要：这一档比 prior_real 多了整个 CoT 编码器的参数（base.yaml 里已把它压到与
+# FiLM 分支同量级，约 27 万）。所以 real_cot − real 混合了"CoT 信息"与"额外容量"两个因素，
+# **必须**同时跑 prior_real_cot_shuffled 才能把容量那部分扣掉。
+_base_: base.yaml
+
+model:
+  name: unet_film
+  cot:
+    enabled: true
+    mode: both                     # 结构化字段 + CoT 嵌入
+prior:
+  mode: real
+  shuffle_cot: false

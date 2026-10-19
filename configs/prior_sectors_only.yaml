@@ -1,0 +1,9 @@
+# 消融：只用 sectors（40 维），不要全局字段。
+# 直接检验"真正随 Tx 变化的空间先验"自身能带多少信息。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real
+  prior_groups: [sectors]

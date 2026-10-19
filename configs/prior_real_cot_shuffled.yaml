@@ -1,0 +1,20 @@
+# 消融：CoT 的**容量对照**（H3 的关键一档）。
+#
+# 结构与 prior_real_cot 逐位相同（同样的 CoT 编码器、同样的参数量），
+# 只把 CoT 文本在样本间错位打乱（无不动点，`prior.shuffle_cot: true`）。
+#
+# 于是：
+#   prior_real_cot − prior_real_cot_shuffled  → 纯粹是 CoT **内容**的贡献
+#   prior_real_cot − prior_real               → CoT 内容 + 额外容量 的总效应
+# 只报后者会把容量效应误算成 CoT 的功劳。
+_base_: base.yaml
+
+model:
+  name: unet_film
+  cot:
+    enabled: true
+    mode: both
+prior:
+  mode: real
+  shuffle_cot: true
+  shuffle_seed: 12345

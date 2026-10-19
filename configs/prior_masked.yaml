@@ -1,0 +1,11 @@
+# 消融阶梯 2/4：参数量对齐对照 —— 结构与 prior_real 逐位相同，只把先验向量置零。
+# 回答："光是多了一条条件通路，本身值多少？"
+#
+# 这是上一版缺失的对照：上一版 FiLM 比 baseline 多 282,688 个参数，所以那 +0.25 dB
+# 无法排除"单纯多了容量"。有了这一档，real − masked 才是先验信息的净贡献。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: masked                     # dataset 喂全零向量，参数量与 prior_real 完全相同

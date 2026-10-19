@@ -1,0 +1,7 @@
+# 消融阶梯 3/4：主实验 —— 真 LLM 先验经 FiLM 注入解码器。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real

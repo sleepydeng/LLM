@@ -1,0 +1,108 @@
+{
+  "n_files": 4000,
+  "n_unique_vector": 55,
+  "unique_ratio": 0.01375,
+  "per_key": {
+    "scene_type": {
+      "unique": 2,
+      "top1_value": "dense_urban",
+      "top1_share": 0.52,
+      "entropy_bits": 0.9988455359952018
+    },
+    "dominant_material": {
+      "unique": 2,
+      "top1_value": "concrete",
+      "top1_share": 0.5205,
+      "entropy_bits": 0.9987870748635468
+    },
+    "confidence": {
+      "unique": 3,
+      "top1_value": "medium",
+      "top1_share": 0.979,
+      "entropy_bits": 0.15481491408117407
+    },
+    "los_ratio": {
+      "unique": 7,
+      "top1_value": "0.45",
+      "top1_share": 0.4795,
+      "entropy_bits": 1.703053094888309
+    },
+    "reflection_ratio": {
+      "unique": 5,
+      "top1_value": "0.35",
+      "top1_share": 0.4795,
+      "entropy_bits": 1.3748216071336026
+    },
+    "diffraction_ratio": {
+      "unique": 6,
+      "top1_value": "0.15",
+      "top1_share": 0.4795,
+      "entropy_bits": 1.8297765061635616
+    },
+    "scattering_ratio": {
+      "unique": 6,
+      "top1_value": "0.05",
+      "top1_share": 0.54725,
+      "entropy_bits": 1.5937209583896284
+    },
+    "permittivity": {
+      "unique": 5,
+      "top1_value": "6.0",
+      "top1_share": 0.50325,
+      "entropy_bits": 1.785799266943452
+    },
+    "penetration_loss_db": {
+      "unique": 7,
+      "top1_value": "10.0",
+      "top1_share": 0.86725,
+      "entropy_bits": 0.6500992515485666
+    },
+    "pathloss_min_db": {
+      "unique": 3,
+      "top1_value": "60.0",
+      "top1_share": 0.85325,
+      "entropy_bits": 0.7048333575811929
+    },
+    "pathloss_max_db": {
+      "unique": 7,
+      "top1_value": "120.0",
+      "top1_share": 0.48425,
+      "entropy_bits": 1.5595282996513402
+    }
+  },
+  "missing_keys": {
+    "tx_local_building_ratio_50m": 4000,
+    "tx_local_building_ratio_100m": 4000
+  },
+  "intra_map_unique_ratio_mean": 0.10425000000000001,
+  "n_maps": 50,
+  "samples_per_map_mean": 80.0,
+  "n_parse_failed": 0,
+  "parse_failed": [],
+  "gate": {
+    "pass": false,
+    "results": [
+      {
+        "gate": "unique_ratio",
+        "value": 0.0138,
+        "threshold": 0.5,
+        "op": ">=",
+        "pass": false
+      },
+      {
+        "gate": "max_top1_share[confidence]",
+        "value": 0.979,
+        "threshold": 0.4,
+        "op": "<",
+        "pass": false
+      },
+      {
+        "gate": "intra_map_unique_ratio_mean",
+        "value": 0.1043,
+        "threshold": 0.5,
+        "op": ">=",
+        "pass": false
+      }
+    ]
+  }
+}

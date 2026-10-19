@@ -1,0 +1,19 @@
+# 天花板估计：更容量大的纯场景图模型（无先验、无 FiLM）。
+#
+# 回答 §2 第 2 步的问题：8.3 dB 是"任务/损失目标"的地板，还是"模型容量"的地板。
+#   若 base_channels=64（约 4× 参数量）仍然停在 ~8.3 dB，说明任务已饱和，
+#   那么"real_v3 ≈ masked_em"就**不能**再归因于先验无用（可能只是任务没空间）。
+#   若它明显更低，说明还有容量空间，null 结果才更有意义（先验确实没帮上）。
+#
+# batch_size 降到 8：base=64 时前向/反传的显存与算力约 4 倍，49GB 单卡下 16 会紧。
+_base_: base.yaml
+
+model:
+  name: unet
+  base_channels: 64
+
+prior:
+  mode: none
+
+train:
+  batch_size: 8

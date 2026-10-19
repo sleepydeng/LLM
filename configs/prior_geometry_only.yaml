@@ -1,0 +1,15 @@
+# 路线 A 的**关键对照 1/3**：只用程序精确测量的几何，完全不含 LLM 输出。
+#
+# 为什么必须有这一档：v3 设计里空间信息来自程序、电磁信息来自 LLM。
+# 那么"LLM 先验有用"这个结论就必须靠它与 prior_real_v3 的差值来支撑 ——
+# 如果两者一样好，说明 LLM 的电磁字段没有增加信息，把几何直接喂给模型就够了。
+#
+# 注意：本档 prior_dim = 42，而 prior_real_v3 是 64，**参数量不同**，
+# 所以严格比较应主要看 prior_v3_masked_em（dim 也是 64）。
+_base_: base.yaml
+
+model:
+  name: unet_film
+prior:
+  mode: real
+  prior_groups: [local_ratio, sectors]      # 只有几何：2 + 40 = 42 维
