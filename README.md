@@ -175,7 +175,7 @@ python -m tests.test_pipeline    # 端到端：训练→ckpt→评测→metrics 
 
 ## 文档
 
-- [PAPER.md](PAPER.md) — 论文正文（摘要 / 方法 / 结果 / 讨论 / 结论）。
+- [EXPERIMENT_SUMMARY.md](EXPERIMENT_SUMMARY.md) — 实验总结（结论 / 方法 / 结果 / 边界）。
 - [REPRODUCE.md](REPRODUCE.md) — 从零复现全部数字的精确步骤。
 - [AGENTS.md](AGENTS.md) — 项目约定、配对对照清单、历次实测教训。
 - [RUNBOOK_AutoDL.md](RUNBOOK_AutoDL.md) — 远程 GPU 机器操作手册。
