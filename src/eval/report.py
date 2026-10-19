@@ -16,7 +16,7 @@
 
 三件必须做对的事
 --------------
-1. **多 seed**：一个 config_name 通常有 3 个 seed（论文级结论要求 mean ± std）。
+1. **多 seed**：一个 config_name 通常有 3 个 seed（结论要求 mean ± std）。
    所以先按 config_name 分组，再在 seed 维上取均值/标准差，而不是把 seed 当独立实验。
 2. **配对比较**：`prior_real` 与 `prior_masked/shuffled` 跑的是同一批 test maps
    （test 只评一次、划分冻结），逐样本指标强相关，必须用 `paired_stats.paired_compare`
@@ -401,7 +401,7 @@ def seed_level_delta(recs_a: Sequence[dict], recs_b: Sequence[dict], name_a: str
     """seed 级配对差值：同 seed 的两个 run 相减，再在 seed 维取 mean±std。
 
     与逐样本配对的分工：这一层回答"跨 seed 稳定吗"，逐样本配对回答"在固定测试集上
-    差值是否显著"。两者都要报（论文级结论要求 mean±std，而显著性只能从逐样本得到）。
+    差值是否显著"。两者都要报（结论要求 mean±std，而显著性只能从逐样本得到）。
     """
     by_seed_a = {r["seed"]: r for r in recs_a if r["seed"] is not None}
     by_seed_b = {r["seed"]: r for r in recs_b if r["seed"] is not None}

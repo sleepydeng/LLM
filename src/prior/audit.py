@@ -4,7 +4,7 @@
 ---------------------------------------
 上一版 4000 条先验只有 **55 个唯一向量**（unique_ratio 0.0138）、最常见 2 个占 48.3%、
 `confidence` 97.9% 都是 medium、同一张地图内不同 Tx 的唯一向量占比只有 0.104。
-模型学到的是"按地图切换的常量偏置"，不是电磁先验——论文的核心论点因此不成立。
+模型学到的是"按地图切换的常量偏置"，不是电磁先验——上一版的核心论点因此不成立。
 所以：**生成先验后必须先跑本脚本，不达标禁止进入训练阶段。**
 
 v2 相对 starter 版新增的检查
@@ -677,7 +677,7 @@ def evaluate_gates(rep: dict) -> dict:
                 f"{len(sc['program_classes'])} 类（{sc['program_classes']}），"
                 f"最大相邻间隔仅为典型间隔的 {sc.get('natural_gap_ratio', float('nan')):.1f} 倍"
                 f"（< {SCENE_GAP_RATIO_MIN:g}）→ 这是**阈值产物**，"
-                f"论文里不要把它当作真实的场景类别")
+                f"报告里不要把它当作真实的场景类别")
         # 逐 Tx 局部密度分档仅作参考：它跨多类是正常的（同一城图内疏密不同）
         ref = sc.get("local_per_tx_classes_for_reference") or []
         if len(ref) > 1:

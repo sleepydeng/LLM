@@ -7,7 +7,7 @@
     pathloss_norm = 1 - (max(gain/255, 0.2) - 0.2) / 0.8        ∈ [0, 1]
     pathloss_db   = pathloss_norm * (PATHLOSS_MAX - PATHLOSS_MIN) + PATHLOSS_MIN
 
-两条必须写进论文的事实
+两条必须写进报告的事实
 ----------------------
 1. **dB 数依赖人为区间**：本数据集取 `PATHLOSS_MIN=40, PATHLOSS_MAX=200`。
    换一个区间，RMSE 的 dB 值就会变（归一化 RMSE 不变）。与 RadioUNet 等文献对比时

@@ -16,14 +16,14 @@
 #   prior_real_v3         64 维，几何真、电磁真           ← 主实验（要检验的论点）
 #   prior_real_v3_shuffled 64 维，内容样本间打乱          ← H2：起作用的是内容还是通路
 #
-# 关键差值（写进论文主表）：
+# 关键差值：
 #   real_v3 − masked_em       LLM 电磁**内容**的净贡献（参数量逐位相同）
 #   real_v3 − geometry_only   几何 + 电磁 vs 只有几何（**参数量不同**，含容量效应）
 #   real_v3 − real_v3_shuffled 内容 vs 通路
 #
 # 用法：
 #   SEEDS="0" bash scripts/run_v3_ladder.sh            # 单 seed 先测链路与耗时
-#   SEEDS="0 1 2" bash scripts/run_v3_ladder.sh        # 论文级（3 seed，报 mean±std）
+#   SEEDS="0 1 2" bash scripts/run_v3_ladder.sh        # 正式（3 seed，报 mean±std）
 #   ONLY=real_v3 SEEDS="0" bash scripts/run_v3_ladder.sh   # 只跑名字里含该串的配置
 #   DETACH=1 SEEDS="0 1 2" bash scripts/run_v3_ladder.sh   # 挂后台跑（SSH 断连不影响）
 set -u

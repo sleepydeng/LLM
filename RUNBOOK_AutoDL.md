@@ -180,7 +180,7 @@ python -m src.eval.visualize predict \
 ```
 
 报告里的每一张表都由 `runs/*/metrics_test.json` 自动生成。**如果某个数字不在
-metrics 文件里，就不要把它写进论文** —— 上一版的正文与图表对不上就是这么来的。
+metrics 文件里，就不要把它写进报告** —— 上一版的正文与图表对不上就是这么来的。
 
 ## 9. 下载结果回本机
 

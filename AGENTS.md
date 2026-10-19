@@ -14,7 +14,7 @@ LLM 只用 prompt engineering（方案 A），**不训练 LLM**。
 1. **先验生成后必须先跑 `python scripts/audit.py`，未通过硬门槛不得进入训练。**
    理由：上一版 4000 条先验只有 55 个唯一向量（unique_ratio 0.0138），实验因此无效。
 2. **每个训练入口的第一个调用必须是 `set_seed()`**，seed 写进 `runs/<exp_id>/config.yaml`。
-   论文级结论必须来自 **3 个 seed**，报 mean ± std。
+   结论必须来自 **3 个 seed**，报 mean ± std。
 3. **数据划分只能用 `data/splits.json`（leave-maps-out）**，禁止按样本随机划分。
    **禁止用 val 选模型后又用同一个 val 报结果**；`test_maps` 只在最后评一次。
 4. 主表必须包含 `prior_none / prior_masked / prior_real / prior_shuffled` 四种配置，
@@ -48,7 +48,7 @@ Linux + CUDA，数据放 `/root/autodl-tmp`。
 | 把程序算好的答案塞进 prompt | `scene_type` 变成复读，LLM 没真的看图 | prompt 里**没有** `scene_hint`；程序统计只在生成后用于核对（sector 一致率） |
 | 只给全局建筑掩码 | LLM 无法推断"这个 Tx 周围"，先验退化成 per-map 常量 | 额外给 Tx 中心 100 m 局部放大图 + 8 条方位线（`src/prior/prompt_v2.py`） |
 | 说"brighter pixels 表示更高建筑" | 475 条先验写"28GHz、Tx 高度 25m"这一事实错误 | prompt 里明确"掩码是二值的、无高度信息"，并把幻觉做成自动回归检查 |
-| CoT 文本不进模型 | 项目叫 CoT，但 `reasoning` 全项目零引用 | `src/models/cot_encoder.py`：要么真正注入（`prior_real_cot`），要么在论文里明确声明不注入 |
+| CoT 文本不进模型 | 项目叫 CoT，但 `reasoning` 全项目零引用 | `src/models/cot_encoder.py`：要么真正注入（`prior_real_cot`），要么在文档里明确声明不注入 |
 | 不设随机种子 | 0.25 dB 的"提升"无法排除噪声 | 强制 `set_seed()` + 3 seed |
 | baseline 与主模型参数量不同 | FiLM 多 28.3 万参数，无法排除容量效应 | `prior_masked`：结构逐位相同、先验置零（`real − masked` 才可归因） |
 | 样本级划分 | 同图不同 Tx 泄漏，5.11 dB 不代表泛化 | leave-maps-out，35/5/10 maps，冻结进 `data/splits.json` |
@@ -257,7 +257,7 @@ python -m scripts.probe_l1_typology --priors priors/prompt_v3/glm-4v-flash
 > `--limit-maps 0:3 --validate-against reports/llm_grounding_240.json` 可对拍历史结果
 > （`a:b` 与 `--map-range` 一样是左闭右开，`0:3` = maps 0/1/2 = 240 个样本）。
 
-## 参考文献（写 related work 时引用）
+## 背景文献（备查）
 
 - **LLM4PG**, arXiv:2511.02423 — 反面案例：把 LLM 当 sequence backbone 做数值回归
 - **WiCo-PG**, arXiv:2511.15030 — 同组否定 LLM4PG 的后续工作，应作为 baseline

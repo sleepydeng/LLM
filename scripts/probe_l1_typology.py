@@ -1072,7 +1072,7 @@ def render_markdown(t: dict[str, Any], priors_dir: str) -> str:
       "（单驱动量样本内 R² 见上）。所以真正的对照不是"
       "「LLM 字段 vs 零」，而是「LLM 字段 vs 它所编码的那个几何量」。"
       "若只报前者，很容易把「几何量的重新编码」误读成「LLM 的贡献」。")
-    A("- 论文主表至少要同时报：`real_v3`（原样 22 维电磁）、"
+    A("- 核心表至少要同时报：`real_v3`（原样 22 维电磁）、"
       "`masked_em`（电磁置零、参数量逐位相同）、`geometry_only`（只有 42 维几何）、"
       "`real_v3_shuffled`（内容打乱）。四个数放在一起，「LLM 有没有正贡献」才可归因。")
     A("")

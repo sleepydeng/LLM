@@ -140,7 +140,7 @@ audit 硬门槛：4 条 FAIL（unique_ratio / intra_map / numeric_unique_min / n
 
 > 既然电磁那 22 维里大部分是噪声/幻觉，**`masked_em` 很可能与 `real_v3` 持平甚至更好**。
 
-再加 3 个 seed（论文级结论必须 3 seed 报 mean±std）。
+再加 3 个 seed（结论必须 3 seed 报 mean±std）。
 
 ```bash
 python -m src.train.train --config configs/prior_geometry_only.yaml --seed 0
@@ -159,7 +159,7 @@ python -m src.eval.report --runs runs --out reports/summary.md --json reports/su
 估计可达的 RMSE 下界。若任务本身就只能到 4.5 dB 而三组都在 4.5–4.6，那"增量≈0"
 是**任务饱和**，不是先验无用。**这一步不做，第 1 步的结论不成立。**
 
-### 第 3 步：跨模型迁移（**决定论文力度**）
+### 第 3 步：跨模型迁移（**决定结论分量**）
 
 换**一个不同厂商的 LLM** 重跑同一批样本（371 条，免费模型约 15 分钟），
 看 L1 的三仪器结论是否一致。
@@ -288,7 +288,7 @@ python -m tests.test_gate               # 门槛区分度：7 个"只犯一种�
 ### 4.3 项目红线（摘自 `AGENTS.md`，不可协商）
 
 1. 先验生成后**必须先过 `scripts/audit.py` 硬门槛**，不过不许进训练；
-2. 每次训练必须 `set_seed()`，seed 写进 `runs/<exp_id>/config.yaml`；**论文级结论必须 3 seed 报 mean±std**；
+2. 每次训练必须 `set_seed()`，seed 写进 `runs/<exp_id>/config.yaml`；**结论必须 3 seed 报 mean±std**；
 3. 划分只能用 `data/splits.json`（leave-maps-out）；**禁止用 val 选模型又用 val 报结果**；test 只评一次；
 4. 主表必须报告 **`real − masked`** 与 **`real − shuffled`**，而不是只报 `real − none`；
 5. 报告所有数字必须由 `src/eval/report.py` 自动生成，**禁止手抄**（上一版正文与图表对不上就是这么来的）；

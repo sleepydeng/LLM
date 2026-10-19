@@ -103,7 +103,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.split != "test":
         logger.warning(f"正在 {args.split} 上评测。注意 {args.split} 参与过选模型，"
-                       f"在此报告结果属于乐观偏差；论文里的结论只能用 test（AGENTS 规则 3）。")
+                       f"在此报告结果属于乐观偏差；结论只能用 test（AGENTS 规则 3）。")
 
     dcfg = cfg.get("data", {})
     pcfg = cfg.get("prior", {})
